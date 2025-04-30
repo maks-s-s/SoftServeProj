@@ -6,14 +6,19 @@ import lombok.*;
 import java.util.Set;
 import java.util.HashSet;
 
-public class Product {
 
+@Entity
+public class Product {
+    @GeneratedValue
+    @Id
     private Long id;
 
     private String name;
 
     private BigDecimal price;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @ManyToMany

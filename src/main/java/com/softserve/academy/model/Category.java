@@ -10,8 +10,13 @@ import java.util.List;
  * Represents a category of products.
  * Each category can have multiple products associated with it.
  */
+@Entity
 public class Category {
+    @GeneratedValue
+    @Id
     private Long id;
     private String name;
+
+    @OneToMany(mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 }
