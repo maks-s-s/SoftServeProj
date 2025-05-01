@@ -1,9 +1,0 @@
-<changelist name="Uncommitted_changes_before_Checkout_at_01_05_2025_1_05_[Changes]" date="1746050706041" recycled="true" deleted="true">
-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_05_2025_1_05_[Changes]/shelved.patch" />
-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 01.05.2025 1:05 [Changes]" />
-  <binary>
-    <option name="BEFORE_PATH" value="target/classes/com/softserve/academy/model/Customer.class" />
-    <option name="AFTER_PATH" value="target/classes/com/softserve/academy/model/Customer.class" />
-    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_05_2025_1_05_[Changes]/Customer.class" />
-  </binary>
-</changelist>
