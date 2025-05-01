@@ -1,0 +1,23 @@
+Index: src/main/java/com/softserve/academy/model/Customer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.softserve.academy.model;\r\nimport jakarta.persistence.*;\r\nimport lombok.*;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n/**\r\n * Represents a customer in the system.\r\n * Each customer can have multiple purchases associated with them.\r\n */\r\n\r\n@Entity\r\npublic class Customer {\r\n    @GeneratedValue\r\n    @Id\r\n    private Long id;\r\n\r\n    private String name;\r\n\r\n    @Column(unique = true)\r\n    private String email;\r\n\r\n    @Column(unique = true)\r\n    private String phoneNumber;\r\n\r\n    @OneToMany\r\n    private List<Purchase> purchases = new ArrayList<>();\r\n\r\n    public Customer() {}\r\n\r\n    public Customer(String name, String email, String phoneNumber) {\r\n        this.name = name;\r\n        this.email = email;\r\n        this.phoneNumber = phoneNumber;\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    public void setEmail(String email) {\r\n        this.email = email;\r\n    }\r\n\r\n    public String getPhoneNumber() {\r\n        return phoneNumber;\r\n    }\r\n\r\n    public void setPhoneNumber(String phoneNumber) {\r\n        this.phoneNumber = phoneNumber;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {return name+\" \"+email+\" \"+phoneNumber;}\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/softserve/academy/model/Customer.java b/src/main/java/com/softserve/academy/model/Customer.java
+--- a/src/main/java/com/softserve/academy/model/Customer.java	(revision d40e409fdc3069f68edbbac35f4af9a738b87803)
++++ b/src/main/java/com/softserve/academy/model/Customer.java	(date 1746050354473)
+@@ -57,6 +57,12 @@
+     public void setPhoneNumber(String phoneNumber) {
+         this.phoneNumber = phoneNumber;
+     }
++    public Long getId() {
++        return id;
++    }
++    public void setId(Long id) {
++        this.id = id;
++    }
+ 
+     @Override
+     public String toString() {return name+" "+email+" "+phoneNumber;}
