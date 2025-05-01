@@ -5,9 +5,7 @@ import com.softserve.academy.model.Customer;
 import com.softserve.academy.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CustomerController {
@@ -22,5 +20,9 @@ public class CustomerController {
     public void addCustomer(@RequestBody Customer customer) {
         System.out.println(customer);
         custRepo.save(customer);
+    }
+    @GetMapping("/customer/get/{id}")
+    public Customer getCustomer(@PathVariable("id") Long id) {
+        return custRepo.findById(id).get();
     }
 }
