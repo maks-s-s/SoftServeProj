@@ -35,7 +35,6 @@ public class Product {
     @Digits(integer = 9, fraction = 2)
     private BigDecimal price;
 
-
     @NotNull(message = "category cannot be null")
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

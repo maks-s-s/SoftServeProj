@@ -12,9 +12,11 @@ import java.util.List;
  */
 @Entity
 public class Category {
+    @GeneratedValue
     @Id
     private Long id;
     private String name;
+
     @OneToMany(mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 }
