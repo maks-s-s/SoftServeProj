@@ -21,7 +21,6 @@ public class CategoryController {
 
     @PostMapping()
     public void addCategory(@RequestBody Category category){
-        System.out.println(category);
         catRepo.save(category);
     }
 }
