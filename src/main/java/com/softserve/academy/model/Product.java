@@ -1,5 +1,6 @@
 package com.softserve.academy.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -38,6 +39,7 @@ public class Product {
     @NotNull(message = "category cannot be null")
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference
     private Category category;
 
     @Builder.Default
