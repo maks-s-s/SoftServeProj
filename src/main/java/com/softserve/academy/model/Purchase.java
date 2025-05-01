@@ -55,4 +55,8 @@ public class Purchase {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime purchaseDate;
+
+    public void setTotalPrice(){
+        this.totalPrice=product.getPrice().multiply(BigDecimal.valueOf(quantity));
+    }
 }
