@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="edfed8b9-694a-4849-b71a-b515bb86b741" name="Changes" comment="getCustomer">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f286dd51-3bdb-486a-b05c-1feff3787a7d.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f286dd51-3bdb-486a-b05c-1feff3787a7d.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f286dd51-3bdb-486a-b05c-1feff3787a7d/storage_v2/_src_/database/mydb.Kl8zAA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f286dd51-3bdb-486a-b05c-1feff3787a7d/storage_v2/_src_/database/mydb.Kl8zAA/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/softserve/academy/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/softserve/academy/controller/CategoryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/softserve/academy/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/softserve/academy/model/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/softserve/academy/repository/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/softserve/academy/repository/CategoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/HomePage.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/softserve/academy/model/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/softserve/academy/model/Category.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/softserve/academy/model/Customer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/softserve/academy/model/Customer.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +24,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="HTML File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -60,6 +67,7 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ShoppingSystem.executor": "Run",
     "git-widget-placeholder": "TestBranch1",
     "ignore.virus.scanning.warn.message": "true",
