@@ -8,8 +8,10 @@ import java.util.List;
  * Represents a customer in the system.
  * Each customer can have multiple purchases associated with them.
  */
+@Entity
 public class Customer {
 
+    @Id
     private Long id;
 
     private String name;
@@ -18,6 +20,7 @@ public class Customer {
 
     private String phoneNumber;
 
+    @OneToMany
     private List<Purchase> purchases = new ArrayList<>();
 
 }
