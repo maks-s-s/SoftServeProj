@@ -8,6 +8,8 @@ import java.util.HashSet;
 
 
 @Entity
+@Setter
+@Getter
 public class Product {
     @GeneratedValue
     @Id

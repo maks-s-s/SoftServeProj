@@ -11,6 +11,8 @@ import java.util.List;
  * Each category can have multiple products associated with it.
  */
 @Entity
+@Setter
+@Getter
 public class Category {
     @GeneratedValue
     @Id
@@ -19,4 +21,7 @@ public class Category {
 
     @OneToMany(mappedBy = "category")
     private List<Product> products = new ArrayList<>();
+
+    @Override
+    public String toString(){return id+" "+name;}
 }
