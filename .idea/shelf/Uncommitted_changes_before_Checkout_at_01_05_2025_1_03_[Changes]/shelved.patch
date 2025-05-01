@@ -1,0 +1,39 @@
+Index: src/main/java/com/softserve/academy/controller/CustomerController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.softserve.academy.controller;\r\n\r\n\r\nimport com.softserve.academy.model.Customer;\r\nimport com.softserve.academy.repository.CustomerRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\n@RestController\r\npublic class CustomerController {\r\n    public final CustomerRepository custRepo;\r\n\r\n    @Autowired\r\n    public CustomerController(CustomerRepository custRepo) {\r\n        this.custRepo = custRepo;\r\n    }\r\n\r\n    @PostMapping(\"/customer/add\")\r\n    public void addCustomer(@RequestBody Customer customer) {\r\n        System.out.println(customer);\r\n        custRepo.save(customer);\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/com/softserve/academy/controller/CustomerController.java b/src/main/java/com/softserve/academy/controller/CustomerController.java
+--- a/src/main/java/com/softserve/academy/controller/CustomerController.java	(revision d40e409fdc3069f68edbbac35f4af9a738b87803)
++++ b/src/main/java/com/softserve/academy/controller/CustomerController.java	(date 1746050599823)
+@@ -5,9 +5,7 @@
+ import com.softserve.academy.repository.CustomerRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.data.jpa.repository.JpaRepository;
+-import org.springframework.web.bind.annotation.PostMapping;
+-import org.springframework.web.bind.annotation.RequestBody;
+-import org.springframework.web.bind.annotation.RestController;
++import org.springframework.web.bind.annotation.*;
+ 
+ @RestController
+ public class CustomerController {
+@@ -23,4 +21,5 @@
+         System.out.println(customer);
+         custRepo.save(customer);
+     }
++
+ }
+Index: src/main/java/com/softserve/academy/repository/CustomerRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.softserve.academy.repository;\r\n\r\nimport com.softserve.academy.model.*;\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\n\r\npublic interface CustomerRepository extends JpaRepository<Customer, Long> {\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/com/softserve/academy/repository/CustomerRepository.java b/src/main/java/com/softserve/academy/repository/CustomerRepository.java
+--- a/src/main/java/com/softserve/academy/repository/CustomerRepository.java	(revision d40e409fdc3069f68edbbac35f4af9a738b87803)
++++ b/src/main/java/com/softserve/academy/repository/CustomerRepository.java	(date 1746049185078)
+@@ -4,4 +4,5 @@
+ import org.springframework.data.jpa.repository.JpaRepository;
+ 
+ public interface CustomerRepository extends JpaRepository<Customer, Long> {
++
+ }
