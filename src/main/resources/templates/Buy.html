@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyForm</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            background-color: #f3f3f3;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center; /* Контейнер слева */
+            align-items: flex-start;
+        }
+
+        .button-container {
+            width: 800px;
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+        }
+
+        .button-container button {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #c9c9ad;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #45a049;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="button-container">
+    <button type="button">Buy</button>
+    <form action="/goToCategories" method="get">
+        <button type="submit">All categories</button>
+    </form>
+    <button type="button">Stores</button>
+</div>
+
+
+
+</body>
+</html>
