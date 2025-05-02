@@ -10,6 +10,9 @@ import java.util.HashSet;
 @Entity
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
     @GeneratedValue
     @Id

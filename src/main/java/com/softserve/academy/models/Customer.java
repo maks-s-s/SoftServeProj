@@ -22,10 +22,7 @@ public class Customer {
     private Long id;
 
     @Column(nullable = false)
-    private String passwd;
-
-    @Column(nullable = false, unique = true)
-    private String userName;
+    private String password;
 
     private String name;
 
