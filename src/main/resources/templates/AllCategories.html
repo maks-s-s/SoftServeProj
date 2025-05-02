@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AllCategories</title>
+    <title>All Categories</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,24 +27,33 @@
             margin-bottom: 20px;
         }
 
-        ul {
+        .category-list {
             list-style-type: none;
             padding: 0;
         }
 
-        li {
-            padding: 15px 20px;
+        .category-item {
             margin-bottom: 10px;
+        }
+
+        .category-link {
+            display: block;
+            padding: 15px 20px;
             background-color: #f7f7f7;
             border-radius: 5px;
             transition: background-color 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .category-link:hover {
+            background-color: #e0e0e0;
+        }
+
+        .category-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        li:hover {
-            background-color: #e0e0e0;
         }
 
         .category-id {
@@ -62,12 +71,16 @@
 <div class="container">
 <h1>Categories List</h1>
 
-<ul th:if="${categories != null}">
-    <li th:each="category : ${categories}">
-        <span class = "category-id" th:text="${category.id}"></span> -
-        <span class="category-name" th:text="${category.name}"></span>
-    </li>
-</ul>
+    <ul class="category-list" th:if="${categories != null}">
+        <li class="category-item" th:each="category : ${categories}">
+            <a th:href="@{'/category/' + ${category.id}}" class="category-link">
+                <div class="category-content">
+                    <span class="category-name" th:text="${category.name}"></span>
+                    <span class="category-id" th:text="'ID: ' + ${category.id}"></span>
+                </div>
+            </a>
+        </li>
+    </ul>
 </div>
 
 </body>

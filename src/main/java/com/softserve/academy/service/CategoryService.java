@@ -2,6 +2,7 @@ package com.softserve.academy.service;
 
 import com.softserve.academy.model.Category;
 import com.softserve.academy.model.Customer;
+import com.softserve.academy.model.Product;
 import com.softserve.academy.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
