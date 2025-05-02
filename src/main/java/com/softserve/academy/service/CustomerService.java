@@ -61,4 +61,9 @@ public class CustomerService {
     public Page<CustomerDTO> getAllCustomers(Pageable pageable){
         return custRepo.findAll(pageable).map(customer ->toCustomerDTO(customer, false));
     }
+
+    public Customer findByEmail(String email) {
+        return custRepo.findByEmail(email);
+    }
+
 }
