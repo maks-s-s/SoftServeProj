@@ -3,14 +3,12 @@ package com.softserve.academy.controller;
 import com.softserve.academy.dto.CustomerDTO;
 import com.softserve.academy.model.Customer;
 import com.softserve.academy.service.CustomerService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import static com.softserve.academy.mappers.CustomerMapper.*;
 
