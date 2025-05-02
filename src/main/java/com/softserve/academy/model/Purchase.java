@@ -1,4 +1,4 @@
-package com.softserve.academy.models;
+package com.softserve.academy.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;

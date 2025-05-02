@@ -2,7 +2,6 @@ package com.softserve.academy.controller;
 
 
 import com.softserve.academy.model.Category;
-import com.softserve.academy.model.Product;
 import com.softserve.academy.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

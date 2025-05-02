@@ -1,4 +1,4 @@
-package com.softserve.academy.models;
+package com.softserve.academy.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
