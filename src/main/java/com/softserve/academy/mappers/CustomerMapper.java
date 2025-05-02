@@ -6,6 +6,7 @@ import com.softserve.academy.model.Customer;
 public class CustomerMapper {
 
     public static CustomerDTO toCustomerDTO(Customer customer, boolean withPassword){
+        if (customer==null) return null;
         return CustomerDTO.builder()
                 .id(customer.getId())
                 .name(customer.getName())

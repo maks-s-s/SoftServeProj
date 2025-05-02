@@ -37,6 +37,7 @@ public class CustomerRestController {
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDTO> getCustomer(@PathVariable("id") Long id){
         CustomerDTO customerDTO = toCustomerDTO(custSrv.getCustomerById(id), false);
+        if (customerDTO==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(customerDTO);
     }
 

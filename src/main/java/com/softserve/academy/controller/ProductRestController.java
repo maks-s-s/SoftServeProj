@@ -57,10 +57,17 @@ public class ProductRestController {
         if (prodDetails==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(prodDetails);
     }
-
+    @GetMapping("")
+    public ResponseEntity<Page<ProductDTO>> getAllProducts(
+            @RequestParam(name="size", defaultValue = "3") int size,
+            @RequestParam(name="page", defaultValue = "0") int page,
+            @RequestParam(name="mostExpensiveFirst", defaultValue="true") boolean mostExpensiveFirst
+    ){
+        return getProductsByCategory(0L, size, page, mostExpensiveFirst);
+    }
 
     @GetMapping("/category/{category-id}")
-    public ResponseEntity<Page<ProductDTO>> getProductsByCategory(  @PathVariable("category-id") Long catId,
+    public ResponseEntity<Page<ProductDTO>> getProductsByCategory(  @PathVariable(name = "category-id") Long catId,
                                                     @RequestParam(name="size", defaultValue = "3") int size,
                                                     @RequestParam(name="page", defaultValue = "0") int page,
                                                     @RequestParam(name="mostExpensiveFirst", defaultValue="true") boolean mostExpensiveFirst){
