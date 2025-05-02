@@ -9,6 +9,7 @@ import com.softserve.academy.models.Purchase;
 import com.softserve.academy.repositories.ProductRepository;
 import com.softserve.academy.repositories.PurchaseRepository;
 import jakarta.transaction.Transactional;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @Service
 public class PurchaseService {
 
+    @Getter
     public final PurchaseRepository purRepo;
     public final CustomerService custSrv;
     public final ProductRepository prodRepo;
@@ -49,4 +51,5 @@ public class PurchaseService {
         cust.addPurchase(newPurchase);
         return true;
     }
+
 }

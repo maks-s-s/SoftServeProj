@@ -1,6 +1,8 @@
 package com.softserve.academy.repositories;
 
 import com.softserve.academy.models.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +18,10 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     List<Purchase> findByProduct(Product product);
 
     // Find all purchases by a specific customer, ordered by purchase date in descending order
-    List<Purchase> findByCustomerOrderByPurchaseDateDesc(Customer customer);
+    Page<Purchase> findByCustomerOrderByPurchaseDateDesc(Customer customer, Pageable pageable);
 
     // Find all purchases by a specific product, ordered by purchase date in descending order
     List<Purchase> findByCustomerAndProduct(Customer customer, Product product);
+
+    Page<Purchase> findByCustomerIdOrderByPurchaseDateDesc(Long customerId, Pageable pageable);
 }
