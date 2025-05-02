@@ -20,13 +20,12 @@ public class CustomerRestController {
 
     @PostMapping()
     public ResponseEntity<Void> addCustomer(@Valid @RequestBody CustomerDTO customer){
-        if (customer.validate() && !custSrv.userNameExists(customer.getUserName())){
+        if (customer.validate()){
             custSrv.saveCustomer(
                     Customer.builder()
                             .name(customer.getName())
                             .email(customer.getEmail())
-                            .userName(customer.getUserName())
-                            .passwd(customer.getPasswd())
+                            .password(customer.getPassword())
                             .phoneNumber(customer.getPhoneNumber())
                             .build()
             );

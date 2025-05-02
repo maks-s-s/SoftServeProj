@@ -22,10 +22,6 @@ public class CustomerService {
         custRepo.save(customer);
     }
 
-    public boolean userNameExists(String username){
-        return custRepo.getCustomersByUserName(username)!=null;
-    }
-
     public ObscuredCustomerDTO getCustomerById(Long id){
         Customer customer = custRepo.findById(id).orElse(null);
         return ObscuredCustomerDTO.builder()
@@ -43,8 +39,7 @@ public class CustomerService {
             cust.setName(customer.getName()!=null?customer.getName():cust.getName());
             cust.setEmail(customer.getEmail()!=null?customer.getEmail():cust.getEmail());
             cust.setPhoneNumber(customer.getPhoneNumber()!=null?customer.getPhoneNumber():cust.getPhoneNumber());
-            cust.setPasswd(customer.getPasswd()!=null?customer.getPasswd():cust.getPasswd());
-            cust.setUserName(customer.getUserName()!=null?customer.getUserName():cust.getUserName());
+            cust.setPassword(customer.getPassword()!=null?customer.getPassword():cust.getPassword());
             return true;
         }
         return false;
