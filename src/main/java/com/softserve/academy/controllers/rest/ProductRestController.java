@@ -5,8 +5,14 @@ import com.softserve.academy.dto.ProductDTO;
 import com.softserve.academy.models.Product;
 import com.softserve.academy.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.softserve.academy.mappers.*;
+
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/api/products")
@@ -50,5 +56,18 @@ public class ProductRestController {
         ProductDTO prodDetails = prodSrv.getProductDetails(id);
         if (prodDetails==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(prodDetails);
+    }
+
+
+    @GetMapping("/category/{category-id}")
+    public Page<ProductDTO> getProductsByCategory( @PathVariable("category-id") Long catId,
+                                                @RequestParam(name="size", defaultValue = "3") int size,
+                                                @RequestParam(name="page", defaultValue = "0") int page,
+                                                @RequestParam(name="mostExpensiveFirst", defaultValue="true") boolean mostExpensiveFirst){
+        Pageable pageable;
+        if (mostExpensiveFirst){pageable = PageRequest.of(page, size, Sort.by("price").descending());}
+        else {pageable = PageRequest.of(page, size, Sort.by("price").ascending());}
+        return prodSrv.getProductsByCategory(catId, pageable).map(
+                product -> ProductDTOMapper.toProductDTO(product));
     }
 }

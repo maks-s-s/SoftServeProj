@@ -6,7 +6,11 @@ import com.softserve.academy.models.Product;
 import com.softserve.academy.repositories.CategoryRepository;
 import com.softserve.academy.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -59,6 +63,12 @@ public class ProductService {
                 .price(product.getPrice())
                 .categoryId(product.getCategory().getId())
                 .build();
+    }
+
+
+    public Page<Product> getProductsByCategory(Long id, Pageable pageable){
+        if (catRepo.findById(id).isEmpty()) return null;
+        return prodRepo.findProductByCategory_Id(id, pageable);
     }
 
 }
