@@ -5,8 +5,12 @@ import com.softserve.academy.models.Customer;
 import com.softserve.academy.services.CustomerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import static com.softserve.academy.mappers.CustomerMapper.*;
 
 @RestController
 @AllArgsConstructor
@@ -32,7 +36,7 @@ public class CustomerRestController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDTO> getCustomer(@PathVariable("id") Long id){
-        CustomerDTO customerDTO = custSrv.getCustomerDTOById(id, false);
+        CustomerDTO customerDTO = toCustomerDTO(custSrv.getCustomerById(id), false);
         return ResponseEntity.ok(customerDTO);
     }
 
@@ -46,5 +50,14 @@ public class CustomerRestController {
     public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Long id){
         if (custSrv.deleteCustomer(id)) return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping()
+    public ResponseEntity<Page<CustomerDTO>> getAllCustomers(
+            @RequestParam(name="size", defaultValue = "3") int size,
+            @RequestParam(name="page", defaultValue = "0") int page
+    ){
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(custSrv.getAllCustomers(pageable));
     }
 }
