@@ -1,7 +1,7 @@
 package com.softserve.academy.mappers;
 
 import com.softserve.academy.dto.CustomerDTO;
-import com.softserve.academy.models.Customer;
+import com.softserve.academy.model.Customer;
 
 public class CustomerMapper {
 

@@ -1,7 +1,6 @@
-package com.softserve.academy.repositories;
+package com.softserve.academy.repository;
 
-
-import com.softserve.academy.models.*;
+import com.softserve.academy.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {

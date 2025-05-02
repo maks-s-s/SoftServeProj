@@ -1,6 +1,6 @@
 package com.softserve.academy.dto;
 
-import com.softserve.academy.models.Purchase;
+import com.softserve.academy.model.Purchase;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

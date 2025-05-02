@@ -1,8 +1,8 @@
-package com.softserve.academy.controllers.rest;
+package com.softserve.academy.controller;
 
 import com.softserve.academy.dto.CustomerDTO;
-import com.softserve.academy.models.Customer;
-import com.softserve.academy.services.CustomerService;
+import com.softserve.academy.model.Customer;
+import com.softserve.academy.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

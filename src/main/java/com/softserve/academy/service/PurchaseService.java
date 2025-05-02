@@ -1,13 +1,11 @@
-package com.softserve.academy.services;
+package com.softserve.academy.service;
 
 
-import com.softserve.academy.controllers.rest.CustomerRestController;
-import com.softserve.academy.dto.ProductDTO;
 import com.softserve.academy.dto.PurchaseDTO;
-import com.softserve.academy.models.Customer;
-import com.softserve.academy.models.Purchase;
-import com.softserve.academy.repositories.ProductRepository;
-import com.softserve.academy.repositories.PurchaseRepository;
+import com.softserve.academy.model.Customer;
+import com.softserve.academy.model.Purchase;
+import com.softserve.academy.repository.ProductRepository;
+import com.softserve.academy.repository.PurchaseRepository;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;

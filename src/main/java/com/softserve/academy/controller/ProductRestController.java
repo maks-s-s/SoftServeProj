@@ -1,9 +1,9 @@
-package com.softserve.academy.controllers.rest;
+package com.softserve.academy.controller;
 
 
 import com.softserve.academy.dto.ProductDTO;
-import com.softserve.academy.models.Product;
-import com.softserve.academy.services.ProductService;
+import com.softserve.academy.model.Product;
+import com.softserve.academy.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

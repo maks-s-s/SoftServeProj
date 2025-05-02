@@ -1,10 +1,9 @@
-package com.softserve.academy.services;
+package com.softserve.academy.service;
 
 
 import com.softserve.academy.dto.CustomerDTO;
-import com.softserve.academy.mappers.CustomerMapper;
-import com.softserve.academy.models.*;
-import com.softserve.academy.repositories.CustomerRepository;
+import com.softserve.academy.model.*;
+import com.softserve.academy.repository.CustomerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.softserve.academy.models;
+package com.softserve.academy.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@ToString
 public class Customer {
     @GeneratedValue
     @Id
@@ -36,10 +37,11 @@ public class Customer {
                 mappedBy="customer")
     private List<Purchase> purchases = new ArrayList<>();
 
-    public Customer(String name, String email, String phoneNumber) {
+    public Customer (String name, String email, String phoneNumber, String password) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
     public void addPurchase(Purchase purchase){purchases.add(purchase);}

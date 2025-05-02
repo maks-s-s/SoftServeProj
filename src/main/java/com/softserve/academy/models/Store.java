@@ -1,4 +1,4 @@
-package com.softserve.academy.models;
+package com.softserve.academy.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

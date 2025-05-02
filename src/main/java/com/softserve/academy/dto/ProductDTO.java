@@ -1,9 +1,6 @@
 package com.softserve.academy.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.softserve.academy.models.Category;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

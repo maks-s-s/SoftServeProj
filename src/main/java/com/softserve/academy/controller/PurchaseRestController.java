@@ -1,10 +1,10 @@
-package com.softserve.academy.controllers.rest;
+package com.softserve.academy.controller;
 
 
 import com.softserve.academy.dto.PurchaseDTO;
-import com.softserve.academy.models.Purchase;
-import com.softserve.academy.repositories.PurchaseRepository;
-import com.softserve.academy.services.PurchaseService;
+import com.softserve.academy.model.Purchase;
+import com.softserve.academy.repository.PurchaseRepository;
+import com.softserve.academy.service.PurchaseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -1,16 +1,13 @@
-package com.softserve.academy.services;
+package com.softserve.academy.service;
 
 import com.softserve.academy.dto.ProductDTO;
-import com.softserve.academy.models.Category;
-import com.softserve.academy.models.Product;
-import com.softserve.academy.repositories.CategoryRepository;
-import com.softserve.academy.repositories.ProductRepository;
+import com.softserve.academy.model.Product;
+import com.softserve.academy.repository.CategoryRepository;
+import com.softserve.academy.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProductService {

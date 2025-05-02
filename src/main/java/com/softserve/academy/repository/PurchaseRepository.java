@@ -1,6 +1,6 @@
-package com.softserve.academy.repositories;
+package com.softserve.academy.repository;
 
-import com.softserve.academy.models.*;
+import com.softserve.academy.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

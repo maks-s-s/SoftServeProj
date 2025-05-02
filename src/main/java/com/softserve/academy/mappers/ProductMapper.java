@@ -1,7 +1,7 @@
 package com.softserve.academy.mappers;
 
 import com.softserve.academy.dto.ProductDTO;
-import com.softserve.academy.models.Product;
+import com.softserve.academy.model.Product;
 
 public class ProductMapper {
     public static ProductDTO toProductDTO(Product product){
