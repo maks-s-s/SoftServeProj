@@ -21,9 +21,7 @@ public class ProductRestController {
 
     @PostMapping()
     public ResponseEntity<Void> addProduct(@RequestBody ProductDTO product){
-        System.out.println("cum");
         if (product.validate()){
-            System.out.println("lol");
             if(prodSrv.addProduct(
                     Product.builder()
                             .name(product.getName())

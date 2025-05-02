@@ -21,7 +21,6 @@ public class ProductService {
 
     public boolean addProduct(Product product, Long categoryId){
         if (catRepo.findById(categoryId).isEmpty()) {
-            System.out.println("shit");
             return false;
         }
         try {
