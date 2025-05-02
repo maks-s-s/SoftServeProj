@@ -28,10 +28,11 @@ public class CategoryRestController {
 
     @GetMapping("")
     public ResponseEntity<Page<Category>> getAllCategories(@RequestParam(name = "size", defaultValue = "3") int size,
-                                                          @RequestParam(name = "page", defaultValue = "0") int page
+                                                           @RequestParam(name = "page", defaultValue = "0") int page
     ) {
-        Pageable pageable = PageRequest.of(size, page);
+        Pageable pageable = PageRequest.of(page,size);
         return ResponseEntity.ok(catSrv.findAllCategories(pageable));
-
     }
+
+
 }
