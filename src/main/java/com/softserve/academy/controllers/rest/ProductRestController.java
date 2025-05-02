@@ -60,14 +60,16 @@ public class ProductRestController {
 
 
     @GetMapping("/category/{category-id}")
-    public Page<ProductDTO> getProductsByCategory( @PathVariable("category-id") Long catId,
-                                                @RequestParam(name="size", defaultValue = "3") int size,
-                                                @RequestParam(name="page", defaultValue = "0") int page,
-                                                @RequestParam(name="mostExpensiveFirst", defaultValue="true") boolean mostExpensiveFirst){
+    public ResponseEntity<Page<ProductDTO>> getProductsByCategory(  @PathVariable("category-id") Long catId,
+                                                    @RequestParam(name="size", defaultValue = "3") int size,
+                                                    @RequestParam(name="page", defaultValue = "0") int page,
+                                                    @RequestParam(name="mostExpensiveFirst", defaultValue="true") boolean mostExpensiveFirst){
         Pageable pageable;
         if (mostExpensiveFirst){pageable = PageRequest.of(page, size, Sort.by("price").descending());}
         else {pageable = PageRequest.of(page, size, Sort.by("price").ascending());}
-        return prodSrv.getProductsByCategory(catId, pageable).map(
-                product -> ProductMapper.toProductDTO(product));
+        Page<Product> products = prodSrv.getProductsByCategory(catId, pageable);
+        if (products==null){return ResponseEntity.notFound().build();}
+        return ResponseEntity.ok(products.map(ProductMapper::toProductDTO));
     }
+
 }

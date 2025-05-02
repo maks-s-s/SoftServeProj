@@ -22,13 +22,14 @@ public class ProductService {
         this.catRepo = catRepo;
     }
 
-
+    @Transactional
     public boolean addProduct(Product product, Long categoryId){
         if (catRepo.findById(categoryId).isEmpty()) {
             return false;
         }
         try {
             product.setCategory(catRepo.findById(categoryId).get());
+            catRepo.findById(categoryId).get().getProducts().add(product);
             prodRepo.save(product);
         } catch (Exception e){
             return false;
@@ -67,7 +68,8 @@ public class ProductService {
 
 
     public Page<Product> getProductsByCategory(Long id, Pageable pageable){
-        if (catRepo.findById(id).isEmpty()) return null;
+        if (id==0L){return prodRepo.findAll(pageable);}
+        if (catRepo.findById(id).isEmpty()) {return null;}
         return prodRepo.findProductByCategory_Id(id, pageable);
     }
 
