@@ -54,7 +54,7 @@ public class ProductService {
         return true;
     }
 
-    public ProductDTO getProductDetails(Long id){
+    public ProductDTO getProductDTO(Long id){
         Product product = prodRepo.findById(id).orElse(null);
         if (product==null) return null;
         return ProductDTO.builder()

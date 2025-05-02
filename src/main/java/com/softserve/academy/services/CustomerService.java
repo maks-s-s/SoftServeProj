@@ -2,11 +2,9 @@ package com.softserve.academy.services;
 
 
 import com.softserve.academy.dto.CustomerDTO;
-import com.softserve.academy.dto.ObscuredCustomerDTO;
 import com.softserve.academy.models.*;
 import com.softserve.academy.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +20,20 @@ public class CustomerService {
         custRepo.save(customer);
     }
 
-    public ObscuredCustomerDTO getCustomerById(Long id){
+    public CustomerDTO getCustomerDTOById(Long id, boolean withPassword){
         Customer customer = custRepo.findById(id).orElse(null);
-        return ObscuredCustomerDTO.builder()
+        if (customer==null) return null;
+        return CustomerDTO.builder()
                 .id(customer.getId())
+                .password(withPassword?customer.getPassword():null)
                 .name(customer.getName())
                 .email(customer.getEmail())
                 .phoneNumber(customer.getPhoneNumber())
                 .build();
+    }
+
+    public Customer getCustomerById(Long id){
+        return custRepo.findById(id).orElse(null);
     }
 
     @Transactional

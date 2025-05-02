@@ -53,7 +53,7 @@ public class ProductRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable("id") Long id){
-        ProductDTO prodDetails = prodSrv.getProductDetails(id);
+        ProductDTO prodDetails = prodSrv.getProductDTO(id);
         if (prodDetails==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(prodDetails);
     }
@@ -68,6 +68,6 @@ public class ProductRestController {
         if (mostExpensiveFirst){pageable = PageRequest.of(page, size, Sort.by("price").descending());}
         else {pageable = PageRequest.of(page, size, Sort.by("price").ascending());}
         return prodSrv.getProductsByCategory(catId, pageable).map(
-                product -> ProductDTOMapper.toProductDTO(product));
+                product -> ProductMapper.toProductDTO(product));
     }
 }

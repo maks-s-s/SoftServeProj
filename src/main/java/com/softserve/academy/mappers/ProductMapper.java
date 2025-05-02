@@ -3,7 +3,7 @@ package com.softserve.academy.mappers;
 import com.softserve.academy.dto.ProductDTO;
 import com.softserve.academy.models.Product;
 
-public class ProductDTOMapper {
+public class ProductMapper {
     public static ProductDTO toProductDTO(Product product){
         return ProductDTO.builder()
                 .id(product.getId())
