@@ -1,16 +1,12 @@
 package com.softserve.academy.controllers.rest;
 
 import com.softserve.academy.dto.CustomerDTO;
-import com.softserve.academy.dto.ObscuredCustomerDTO;
 import com.softserve.academy.models.Customer;
 import com.softserve.academy.services.CustomerService;
 import jakarta.validation.Valid;
-import jakarta.validation.executable.ValidateOnExecution;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 @RestController
 @AllArgsConstructor
@@ -35,9 +31,9 @@ public class CustomerRestController {
 
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ObscuredCustomerDTO> getCustomer(@PathVariable("id") Long id){
-        ObscuredCustomerDTO obscuredCustomerDTO = custSrv.getCustomerById(id);
-        return ResponseEntity.ok(obscuredCustomerDTO);
+    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable("id") Long id){
+        CustomerDTO customerDTO = custSrv.getCustomerDTOById(id, false);
+        return ResponseEntity.ok(customerDTO);
     }
 
     @PatchMapping("/{id}")

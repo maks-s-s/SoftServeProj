@@ -42,6 +42,8 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
+    public void addPurchase(Purchase purchase){purchases.add(purchase);}
+
     @Override
     public String toString() {return name+" "+email+" "+phoneNumber;}
 }
