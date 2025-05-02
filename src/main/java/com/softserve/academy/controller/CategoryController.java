@@ -1,5 +1,6 @@
 package com.softserve.academy.controller;
 
+import org.springframework.ui.Model;
 import com.softserve.academy.model.Category;
 import com.softserve.academy.repository.CategoryRepository;
 import com.softserve.academy.service.CategoryService;
