@@ -1,5 +1,6 @@
 package com.softserve.academy.controller;
 
+import com.softserve.academy.dto.StoreDTO;
 import org.springframework.ui.Model;
 import com.softserve.academy.model.Store;
 import com.softserve.academy.service.StoreService;
@@ -22,10 +23,16 @@ public class StoreViewController {
         this.storeSrv = storeSrv;
     }
     @GetMapping("/StoreViewAll")
-    public String StoreViewAll(Model model, @RequestParam(name = "size", defaultValue = "3") int size, @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String StoreViewAll(Model model, @RequestParam(name = "size", defaultValue = "1") int size, @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<Store> store = storeSrv.getAllStores(pageable);
+        Page<StoreDTO> store = storeSrv.getAllStores(pageable);
         model.addAttribute("store", store);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", store.getTotalPages());
+        model.addAttribute("hasPrev", page > 0);
+        model.addAttribute("hasNext", page < store.getTotalPages() - 1);
+
+
         return "Stores"; // categories.html
 
     }

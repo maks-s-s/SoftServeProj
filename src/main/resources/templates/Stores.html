@@ -123,6 +123,11 @@
     .page-btn.prev:hover {
       background: #e9ecef;
     }
+    .page-info {
+      font-size: 16px;
+      color: #6c757d;
+    }
+
   </style>
 </head>
 <body>
@@ -142,8 +147,13 @@
     </div>
   </div>
   <div class = "page-buttons">
-    <a href="#" class="page-btn prev">← Prev</a>
-    <a href="#" class="page-btn next">Next →</a>
+    <a th:if="${hasPrev}"
+       th:href="@{/StoreViewAll(page=${currentPage - 1}, size=${store.size})}"
+       class="page-btn prev">← Prev</a>
+    <span class="page-info" th:text=" ${currentPage + 1 + '/ ' + totalPages}"></span>
+    <a th:if="${hasNext}"
+       th:href="@{/StoreViewAll(page=${currentPage + 1}, size=${store.size})}"
+       class="page-btn next">Next →</a>
   </div>
 
 </div>
