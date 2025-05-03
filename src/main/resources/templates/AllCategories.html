@@ -73,7 +73,7 @@
 
     <ul class="category-list" th:if="${categories != null}">
         <li class="category-item" th:each="category : ${categories}">
-            <a th:href="@{'/category/' + ${category.id}}" class="category-link">
+            <a th:href="'/product/byCategory/' + ${category.id}" class="category-link">
                 <div class="category-content">
                     <span class="category-name" th:text="${category.name}"></span>
                     <span class="category-id" th:text="'ID: ' + ${category.id}"></span>
