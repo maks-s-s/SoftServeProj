@@ -5,6 +5,7 @@ import com.softserve.academy.dto.PurchaseDTO;
 import com.softserve.academy.model.Purchase;
 import com.softserve.academy.repository.PurchaseRepository;
 import com.softserve.academy.service.PurchaseService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

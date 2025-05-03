@@ -12,6 +12,21 @@
             background-color: #e0e0e0;
         }
 
+        .back-button {
+            margin-top: 20px;
+            display: block;
+            width: 100px;
+            text-align: center;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
         .container {
             display: flex;
             flex-direction: column;
@@ -183,10 +198,10 @@
             </div>
         </div>
         <div>
-            <button th:if="${purchases.hasPrevious()}"
+            <button class="back-button" th:if="${purchases.hasPrevious()}"
                     th:href="@{'/purchaseHistory?page=' + ${purchases.number - 1}}">Previous</button>
 
-            <button th:if="${purchases.hasNext()}"
+            <button class="back-button" th:if="${purchases.hasNext()}"
                     th:href="@{'/purchaseHistory?page=' + ${purchases.number + 1}}">Next</button>
         </div>
     </div>
@@ -223,7 +238,10 @@
     function searchHistory() {
         const searchTerm = document.getElementById("searchInput").value;
         console.log("Searching history for:", searchTerm);
-        // Implement search logic for users' history
+        const url = new URL(window.location);
+        url.searchParams.set('otherCustomer', searchTerm);
+        window.history.replaceState({}, '', url);
+        window.location.reload();
     }
 
     function viewOtherHistories() {

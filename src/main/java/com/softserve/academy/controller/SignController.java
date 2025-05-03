@@ -3,6 +3,7 @@ package com.softserve.academy.controller;
 import com.softserve.academy.model.Customer;
 import com.softserve.academy.model.Purchase;
 import com.softserve.academy.repository.CustomerRepository;
+import com.softserve.academy.service.CustomerService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
@@ -17,6 +18,8 @@ public class SignController {
 
     @Autowired
     private PurchaseRestController purchaseRestController;
+    @Autowired
+    private CustomerService custSvc;
 
     @GetMapping("/")
     public String signInHome() {
@@ -37,9 +40,10 @@ public class SignController {
     @GetMapping("/purchaseHistory")
     public String purchaseHistory(  Model model, HttpSession session,
                                     @RequestParam(name="byDate", defaultValue = "true") boolean sortByDate,
-                                    @RequestParam(name="byPrice", defaultValue = "false") boolean sortByPrice) {
+                                    @RequestParam(name="byPrice", defaultValue = "false") boolean sortByPrice,
+                                    @RequestParam(name="otherCustomer", defaultValue = "null") String otherCustomer) {
         Customer customer = (Customer) session.getAttribute("customer");
-
+        if (!otherCustomer.equals("null")){customer = custSvc.findByEmail(otherCustomer);}
         Page<Purchase> purchases = purchaseRestController.getPurchasesByCustomerId(customer.getId(), 4, 0, sortByDate, sortByPrice);
         model.addAttribute("customer", customer);
         model.addAttribute("purchases", purchases);
