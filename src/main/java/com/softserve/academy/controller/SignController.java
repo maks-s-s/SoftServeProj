@@ -35,15 +35,14 @@ public class SignController {
     }
 
     @GetMapping("/purchaseHistory")
-    public String purchaseHistory(Model model, HttpSession session) {
+    public String purchaseHistory(  Model model, HttpSession session,
+                                    @RequestParam(name="byDate", defaultValue = "true") boolean sortByDate,
+                                    @RequestParam(name="byPrice", defaultValue = "false") boolean sortByPrice) {
         Customer customer = (Customer) session.getAttribute("customer");
 
-        if (customer != null) {
-            Page<Purchase> purchases = purchaseRestController.getPurchasesByCustomerId(customer.getId(), 4, 0);
-
-            model.addAttribute("customer", customer);
-            model.addAttribute("purchases", purchases);
-        }
+        Page<Purchase> purchases = purchaseRestController.getPurchasesByCustomerId(customer.getId(), 4, 0, sortByDate, sortByPrice);
+        model.addAttribute("customer", customer);
+        model.addAttribute("purchases", purchases);
         return "purchaseHistory";
     }
 }

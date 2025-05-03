@@ -201,12 +201,23 @@
 <script>
     function sortByDate() {
         console.log("Sorting by date");
-        // Implement sorting logic by date
+        // 1. Create a URL object for the current location
+        const url = new URL(window.location);
+        url.searchParams.set('byDate', 'true');
+        url.searchParams.set('byPrice', 'false');
+        const newUrl = url.toString();
+        window.history.replaceState({}, '', url);
+        window.location.reload();
     }
 
     function sortByPrice() {
         console.log("Sorting by total price");
-        // Implement sorting logic by total price
+        const url = new URL(window.location);
+        url.searchParams.set('byDate', 'false');
+        url.searchParams.set('byPrice', 'true');
+        const newUrl = url.toString();
+        window.history.replaceState({}, '', url);
+        window.location.reload();
     }
 
     function searchHistory() {
