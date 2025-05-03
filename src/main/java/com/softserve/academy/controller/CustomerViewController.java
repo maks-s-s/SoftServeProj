@@ -43,7 +43,7 @@ public class CustomerViewController {
     public String verify (@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session, Model model) {
         Customer customer = custSrv.findByEmail(email);
         if (customer != null && customer.getPassword().equals(password)) {
-            session.setAttribute("name", customer.getName());
+            session.setAttribute("customer", customer);
             return "redirect:/home";
         }
         else {

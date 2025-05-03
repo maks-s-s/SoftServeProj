@@ -31,7 +31,7 @@ public class PurchaseRestController {
 
     @GetMapping("/{customer-id}")
     public Page<Purchase> getPurchasesByCustomerId(@PathVariable("customer-id") Long custId,
-                                                   @RequestParam(name="size", defaultValue = "3") int size,
+                                                   @RequestParam(name="size", defaultValue = "4") int size,
                                                    @RequestParam(name="page", defaultValue = "0") int page){
         Pageable pageable = PageRequest.of(page, size);
         return purRepo.findByCustomerIdOrderByPurchaseDateDesc(custId, pageable);
