@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/purchases")
 public class PurchaseRestController {
@@ -30,6 +32,7 @@ public class PurchaseRestController {
         return ResponseEntity.badRequest().build();
     }
 
+    // The purchase history page works with {/purchaseHistory} endpoint, in SignController, not with this
     @GetMapping("/{customer-id}")
     public Page<Purchase> getPurchasesByCustomerId(@PathVariable("customer-id") Long custId,
                                                    @RequestParam(name="size", defaultValue = "4") int size,
@@ -43,5 +46,10 @@ public class PurchaseRestController {
             return purRepo.findByCustomerIdOrderByTotalPriceDesc(custId, pageable);
         }
         return purRepo.findAllByCustomerId(custId, pageable);
+    }
+
+    @GetMapping("/getAll")
+    public List<Purchase> getAll() {
+        return purRepo.findAll();
     }
 }

@@ -54,8 +54,8 @@ public class Purchase {
 
     @Column(nullable = false)
     @FutureOrPresent(message = "Purchase date must be in the present or future")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Формат для Spring
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Формат для JSON
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime purchaseDate;
 
     public void setTotalPrice(){

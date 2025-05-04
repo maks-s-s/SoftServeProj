@@ -13,6 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 public class SignController {
 
@@ -41,10 +46,12 @@ public class SignController {
     public String purchaseHistory(  Model model, HttpSession session,
                                     @RequestParam(name="byDate", defaultValue = "true") boolean sortByDate,
                                     @RequestParam(name="byPrice", defaultValue = "false") boolean sortByPrice,
-                                    @RequestParam(name="otherCustomer", defaultValue = "null") String otherCustomer) {
+                                    @RequestParam(name="otherCustomer", defaultValue = "null") String otherCustomer,
+                                    @RequestParam(name="size", defaultValue = "4") int size,
+                                    @RequestParam(name="page", defaultValue = "0") int page) {
         Customer customer = (Customer) session.getAttribute("customer");
         if (!otherCustomer.equals("null")){customer = custSvc.findByEmail(otherCustomer);}
-        Page<Purchase> purchases = purchaseRestController.getPurchasesByCustomerId(customer.getId(), 4, 0, sortByDate, sortByPrice);
+        Page<Purchase> purchases = purchaseRestController.getPurchasesByCustomerId(customer.getId(), size, page, sortByDate, sortByPrice);
         model.addAttribute("customer", customer);
         model.addAttribute("purchases", purchases);
         return "purchaseHistory";

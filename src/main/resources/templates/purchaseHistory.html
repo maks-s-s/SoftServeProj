@@ -12,8 +12,14 @@
             background-color: #e0e0e0;
         }
 
-        .back-button {
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
             margin-top: 20px;
+            width: 900px;
+        }
+
+        .previous-button {
             display: block;
             width: 100px;
             text-align: center;
@@ -25,6 +31,27 @@
             cursor: pointer;
             font-size: 14px;
             text-decoration: none;
+        }
+
+        .next-button {
+            display: block;
+            width: 100px;
+            text-align: center;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            margin-right: auto;
+            margin-left: 700px;
+        }
+
+        .previous-button-container {
+            width: 100px;
+            height: 36px;
         }
 
         .container {
@@ -173,9 +200,25 @@
         .search-history button:hover {
             background-color: #666;
         }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
+
+<a href="/home" class="back-to-home">Back to Home</a>
 
 <div class="container">
     <div class="header">Purchase History</div>
@@ -191,18 +234,26 @@
     <div class="purchase-history">
         <div th:each="purchase : ${purchases.content}">
             <div class="purchase-item">
-                <p>Purchase Date: <span th:text="${purchase.purchaseDate}"></span></p>
+                <p>Purchase Date:
+                    <span th:text="${#temporals.format(purchase.purchaseDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </p>
                 <p>Quantity: <span th:text="${purchase.quantity}"></span></p>
                 <p>Total Price: <span th:text="${purchase.totalPrice}"></span> ₴</p>
                 <p>Item: <span th:text="${purchase.product.name}"></span></p>
             </div>
         </div>
-        <div>
-            <button class="back-button" th:if="${purchases.hasPrevious()}"
-                    th:href="@{'/purchaseHistory?page=' + ${purchases.number - 1}}">Previous</button>
+        <div class="pagination-container">
+            <div class="previous-button-container">
+                <form th:if="${purchases.hasPrevious()}" method="get" onsubmit="updatePageNumber(event, 'previous')">
+                    <input type="hidden" name="page" th:value="${purchases.number - 1}" />
+                    <button class="previous-button">Previous</button>
+                </form>
+            </div>
 
-            <button class="back-button" th:if="${purchases.hasNext()}"
-                    th:href="@{'/purchaseHistory?page=' + ${purchases.number + 1}}">Next</button>
+            <form th:if="${purchases.hasNext()}" method="get" onsubmit="updatePageNumber(event, 'next')">
+                <input type="hidden" name="page" th:value="${purchases.number + 1}" />
+                <button class="next-button">Next</button>
+            </form>
         </div>
     </div>
 
@@ -216,7 +267,6 @@
 <script>
     function sortByDate() {
         console.log("Sorting by date");
-        // 1. Create a URL object for the current location
         const url = new URL(window.location);
         url.searchParams.set('byDate', 'true');
         url.searchParams.set('byPrice', 'false');
@@ -244,9 +294,18 @@
         window.location.reload();
     }
 
-    function viewOtherHistories() {
-        console.log("Viewing other users' histories");
-        // Implement logic to view other users' histories
+    function updatePageNumber(event, direction) {
+        event.preventDefault();
+        const url = new URL(window.location);
+        let currentPage = parseInt(url.searchParams.get('page')) || 0;
+        if (direction === 'previous') {
+            currentPage--;
+        } else if (direction === 'next') {
+            currentPage++;
+        }
+        url.searchParams.set('page', currentPage);
+        window.history.replaceState({}, '', url);
+        window.location.reload();
     }
 </script>
 
