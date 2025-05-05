@@ -1,13 +1,14 @@
 package com.softserve.academy.controller;
 
+
 import com.softserve.academy.dto.StoreDTO;
+
 import org.springframework.ui.Model;
-import com.softserve.academy.model.Store;
+
 import com.softserve.academy.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +34,9 @@ public class StoreViewController {
         model.addAttribute("hasNext", page < store.getTotalPages() - 1);
 
 
-        return "Stores"; // categories.html
+        return "Stores";
 
     }
+
 }
 

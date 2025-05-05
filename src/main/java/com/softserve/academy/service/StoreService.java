@@ -1,26 +1,24 @@
 package com.softserve.academy.service;
 
-
-import com.softserve.academy.dto.ProductDTO;
 import com.softserve.academy.dto.StoreDTO;
 import com.softserve.academy.mappers.StoreMapper;
-import com.softserve.academy.model.*;
+import com.softserve.academy.model.Product;
+import com.softserve.academy.model.Store;
 import com.softserve.academy.repository.ProductRepository;
 import com.softserve.academy.repository.StoreRepository;
-import jakarta.transaction.TransactionScoped;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.softserve.academy.model.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static com.softserve.academy.mappers.StoreMapper.toStoreDTO;
 
 @Service
 public class StoreService {
@@ -33,6 +31,9 @@ public class StoreService {
         this.prodRepo = prodRepo;
     }
 
+    public Page<StoreDTO> getAllStores(Pageable pageable) {
+        return storeRepo.findAll(pageable).map(store -> toStoreDTO(store));
+    }
     public void addStore(Store store){
         storeRepo.save(store);
     }
@@ -69,5 +70,19 @@ public class StoreService {
             pageContent = storeDTOList.subList(start, end);
         }
         return new PageImpl<>(pageContent, pageable, total);
+    }
+    @Transactional
+    public boolean changeStoreById(Long storeId,StoreDTO storeDTO){
+        Store store = storeRepo.findById(storeId).orElse(null);
+        if (store!=null){
+            store.setName(storeDTO.getName()!=null?storeDTO.getName():store.getName());
+            store.setEmail(storeDTO.getEmail()!=null?storeDTO.getEmail():store.getEmail());
+            store.setLocation(storeDTO.getLocation()!=null?storeDTO.getLocation():store.getLocation());
+            store.setContactNumber(storeDTO.getContactNumber()!=null?storeDTO.getContactNumber():store.getContactNumber());
+            return true;
+
+        }
+        return false;
+
     }
 }

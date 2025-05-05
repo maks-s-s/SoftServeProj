@@ -4,11 +4,13 @@ package com.softserve.academy.controller;
 import com.softserve.academy.dto.StoreDTO;
 import com.softserve.academy.mappers.StoreMapper;
 import com.softserve.academy.service.StoreService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,7 +37,7 @@ public class StoreRestController {
     public ResponseEntity<Void> addProductToStore(@PathVariable("id") Long storeId,
                                                   @PathVariable("productId") Long productId){
         if (storeSvc.addProductToStore(storeId, productId)) {
-            return ResponseEntity.accepted().build();
+
         }
         return ResponseEntity.badRequest().build();
     }
@@ -49,4 +51,12 @@ public class StoreRestController {
         if (stores==null){return ResponseEntity.notFound().build();}
         return ResponseEntity.ok(stores);
     }
+    @PatchMapping("/updateStore/{id}")
+    public ResponseEntity<Void> updateStore(@PathVariable("id") Long storeId , @Valid @RequestBody StoreDTO store) {
+        if(storeSvc.changeStoreById(storeId, store)){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }
