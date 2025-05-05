@@ -257,7 +257,7 @@
         </div>
     </div>
 
-    <div class="search-history">
+    <div class="search-history" th:if="${access.toString() == 'ADMIN'}">
         <label for="searchInput">Search for other users' history</label><br>
         <input type="text" id="searchInput" placeholder="Enter username">
         <button onclick="searchHistory()">Search</button>

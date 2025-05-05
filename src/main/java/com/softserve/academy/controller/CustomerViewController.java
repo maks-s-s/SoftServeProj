@@ -1,6 +1,7 @@
 package com.softserve.academy.controller;
 
 import com.softserve.academy.model.Customer;
+import com.softserve.academy.model.Role;
 import com.softserve.academy.service.CustomerService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class CustomerViewController {
                 .email(email)
                 .password(password)
                 .phoneNumber(phoneNumber)
+                .role(Role.USER)
                 .build();
         System.out.println(customer);
         custSrv.saveCustomer(customer);

@@ -50,6 +50,8 @@ public class SignController {
                                     @RequestParam(name="size", defaultValue = "4") int size,
                                     @RequestParam(name="page", defaultValue = "0") int page) {
         Customer customer = (Customer) session.getAttribute("customer");
+        model.addAttribute("access", customer.getRole());
+        System.out.println(customer.getRole());
         if (!otherCustomer.equals("null")){customer = custSvc.findByEmail(otherCustomer);}
         Page<Purchase> purchases = purchaseRestController.getPurchasesByCustomerId(customer.getId(), size, page, sortByDate, sortByPrice);
         model.addAttribute("customer", customer);

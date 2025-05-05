@@ -2,6 +2,7 @@ package com.softserve.academy.controller;
 
 import com.softserve.academy.dto.CustomerDTO;
 import com.softserve.academy.model.Customer;
+import com.softserve.academy.model.Role;
 import com.softserve.academy.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -61,4 +62,10 @@ public class CustomerRestController {
         return ResponseEntity.ok(custSrv.getAllCustomers(pageable));
     }
 
+    @PostMapping("/giveAdminAccess")
+    public void giveAdminAccess(@RequestParam("email") String email) {
+        Customer customer = custSrv.findByEmail(email);
+        customer.setRole(Role.ADMIN);
+        custSrv.saveCustomer(customer);
+    }
 }
