@@ -23,7 +23,7 @@ public class StoreViewController {
         this.storeSrv = storeSrv;
     }
     @GetMapping("/StoreViewAll")
-    public String StoreViewAll(Model model, @RequestParam(name = "size", defaultValue = "1") int size, @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String StoreViewAll(Model model, @RequestParam(name = "size", defaultValue = "3") int size, @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page,size);
         Page<StoreDTO> store = storeSrv.getAllStores(pageable);
         model.addAttribute("store", store);

@@ -5,11 +5,37 @@
     <title>Title</title>
 
   <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+
+      --text-light: #f8f9fa;
+      --bg-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
     body{
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
       margin: 0;
       padding: 0;
+    }
+    .header {
+      background: var(--bg-gradient);
+      color: white;
+      padding: 2rem 0;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .header h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
     }
     .container {
       max-width: 1200px;
@@ -73,7 +99,7 @@
       background: #1976d2;
 
     }
-    h1{
+    .container h1{
       text-align: center;
       color: #333333;
       margin-bottom: 20px;
@@ -131,6 +157,9 @@
   </style>
 </head>
 <body>
+<header class="header">
+  <h1 class="headerh1">Available stores</h1>
+</header>
 <div class = "container">
   <h1>Stores</h1>
   <div class = "store-grid">
