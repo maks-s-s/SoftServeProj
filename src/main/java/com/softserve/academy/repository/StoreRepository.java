@@ -1,9 +1,11 @@
 package com.softserve.academy.repository;
 
 import com.softserve.academy.model.*;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Repository
@@ -19,5 +21,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     List<Store> findByLocation(String location);
 
     // Find all stores that contain a specific product
-    List<Store> findByProductsContaining(Product product);
+    Page<Store> findByProductsContaining(Product product, Pageable pageable);
 }
