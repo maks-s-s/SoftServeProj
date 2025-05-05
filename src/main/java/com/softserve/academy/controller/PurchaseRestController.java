@@ -5,6 +5,7 @@ import com.softserve.academy.dto.PurchaseDTO;
 import com.softserve.academy.model.Purchase;
 import com.softserve.academy.repository.PurchaseRepository;
 import com.softserve.academy.service.PurchaseService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,9 +32,16 @@ public class PurchaseRestController {
 
     @GetMapping("/{customer-id}")
     public Page<Purchase> getPurchasesByCustomerId(@PathVariable("customer-id") Long custId,
-                                                   @RequestParam(name="size", defaultValue = "3") int size,
-                                                   @RequestParam(name="page", defaultValue = "0") int page){
+                                                   @RequestParam(name="size", defaultValue = "4") int size,
+                                                   @RequestParam(name="page", defaultValue = "0") int page,
+                                                   @RequestParam(name="byDate", defaultValue = "true") boolean sortByDate,
+                                                   @RequestParam(name="byPrice", defaultValue = "false") boolean sortByPrice) {
         Pageable pageable = PageRequest.of(page, size);
-        return purRepo.findByCustomerIdOrderByPurchaseDateDesc(custId, pageable);
+        if (sortByDate) {
+            return purRepo.findByCustomerIdOrderByPurchaseDateDesc(custId, pageable);
+        } else if (sortByPrice) {
+            return purRepo.findByCustomerIdOrderByTotalPriceDesc(custId, pageable);
+        }
+        return purRepo.findAllByCustomerId(custId, pageable);
     }
 }

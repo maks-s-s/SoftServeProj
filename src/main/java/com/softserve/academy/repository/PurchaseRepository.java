@@ -24,4 +24,8 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     List<Purchase> findByCustomerAndProduct(Customer customer, Product product);
 
     Page<Purchase> findByCustomerIdOrderByPurchaseDateDesc(Long customerId, Pageable pageable);
+
+    Page<Purchase> findByCustomerIdOrderByTotalPriceDesc(Long custId, Pageable pageable);
+
+    Page<Purchase> findAllByCustomerId(Long custId, Pageable pageable);
 }

@@ -13,5 +13,13 @@ public class StoreMapper {
                 .contactNumber(store.getContactNumber())
                 .build();
     }
-}
 
+    public static Store toStore(StoreDTO storeDTO){
+        return Store.builder()
+                .email(storeDTO.email)
+                .contactNumber(storeDTO.contactNumber)
+                .location(storeDTO.location)
+                .name(storeDTO.name)
+                .build();
+    }
+}
