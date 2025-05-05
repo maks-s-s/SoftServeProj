@@ -58,5 +58,12 @@ public class StoreRestController {
         }
         return ResponseEntity.notFound().build();
     }
+    @DeleteMapping("/deleteStore/{id}")
+    public ResponseEntity<Void> deleteStore(@PathVariable("id") Long storeId){
+        if(storeSvc.deleteStoreById(storeId)){
+            return ResponseEntity.ok().build();
+        };
+        return ResponseEntity.notFound().build();
+    }
 
 }

@@ -13,10 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.softserve.academy.mappers.StoreMapper.toStoreDTO;
 
@@ -84,5 +81,23 @@ public class StoreService {
         }
         return false;
 
+    }
+
+    public boolean deleteStoreById(Long storeId){
+        Store store = storeRepo.findById(storeId).orElse(null);
+        if (store==null){
+            return false;
+        }
+
+        Set<Product> productsSET = store.getProducts();
+        Product tempProduct;
+        for (Product prodset: productsSET) {
+            tempProduct = prodset;
+            Set<Store> storesSET = tempProduct.getStores();
+            storesSET.remove(store);
+
+        }
+        storeRepo.delete(store);
+        return true;
     }
 }
