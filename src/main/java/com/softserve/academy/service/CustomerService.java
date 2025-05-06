@@ -66,4 +66,7 @@ public class CustomerService {
         return custRepo.findByEmail(email);
     }
 
+    public boolean existsByEmail(String email) {return custRepo.existsByEmail(email);}
+
+    public boolean existsByPhoneNumber(String phoneNumber) {return custRepo.existsByPhoneNumber(phoneNumber);}
 }

@@ -2,6 +2,7 @@ package com.softserve.academy.controller;
 
 import com.softserve.academy.model.Customer;
 import com.softserve.academy.model.Purchase;
+import com.softserve.academy.model.Role;
 import com.softserve.academy.repository.CustomerRepository;
 import com.softserve.academy.service.CustomerService;
 import jakarta.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,18 +48,37 @@ public class SignController {
     }
 
     @GetMapping("/purchaseHistory")
-    public String purchaseHistory(  Model model, HttpSession session,
+    public String purchaseHistory(  Model model, HttpSession session, RedirectAttributes redirectAttributes,
                                     @RequestParam(name="byDate", defaultValue = "true") boolean sortByDate,
                                     @RequestParam(name="byPrice", defaultValue = "false") boolean sortByPrice,
                                     @RequestParam(name="otherCustomer", defaultValue = "null") String otherCustomer,
                                     @RequestParam(name="size", defaultValue = "4") int size,
                                     @RequestParam(name="page", defaultValue = "0") int page) {
-        if (session.getAttribute("customer") == null) {return "redirect:/";}
+        if (session.getAttribute("customer") == null) {
+            return "redirect:/";
+        }
         Customer customer = (Customer) session.getAttribute("customer");
+
         model.addAttribute("access", customer.getRole());
-        System.out.println(customer.getRole());
-        if (!otherCustomer.equals("null")){customer = custSvc.findByEmail(otherCustomer);}
+        if (!otherCustomer.equals("null")){
+            if (customer.getRole() != Role.ADMIN) {
+                return "redirect:/error-403";
+            }
+            if (!custSvc.existsByEmail(otherCustomer)) {
+                redirectAttributes.addFlashAttribute("error", "There aren't any users with this email.");
+                return "redirect:/purchaseHistory";
+            }
+            customer = custSvc.findByEmail(otherCustomer);
+        }
+
+
         Page<Purchase> purchases = purchaseRestController.getPurchasesByCustomerId(customer.getId(), size, page, sortByDate, sortByPrice);
+
+        int maxPage = purchases.getTotalPages() - 1;
+        if (maxPage > 0 && page > maxPage) {
+            page = maxPage;
+        }
+        purchases = purchaseRestController.getPurchasesByCustomerId(customer.getId(), size, page, sortByDate, sortByPrice);
         model.addAttribute("customer", customer);
         model.addAttribute("purchases", purchases);
         return "purchaseHistory";

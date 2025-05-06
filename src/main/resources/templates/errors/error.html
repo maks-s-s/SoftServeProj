@@ -41,7 +41,8 @@
 <div class="container">
   <h1 th:text="'Error ' + ${errorCode}"></h1>
   <img th:src="@{'https://http.cat/' + ${errorCode} + '.jpg'}" alt="Error Image">
-  <p><a class="home-link" href="/">Go to Sign In</a></p>
+  <p th:if="${session.customer != null}"><a class="home-link" href="/home">Back to home page</a></p>
+  <p th:if="${session.customer == null}"><a class="home-link" href="/">Back to Sign In page</a></p>
 </div>
 </body>
 </html>

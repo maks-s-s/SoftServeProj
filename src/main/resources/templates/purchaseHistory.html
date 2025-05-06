@@ -46,12 +46,17 @@
             font-size: 14px;
             text-decoration: none;
             margin-right: auto;
-            margin-left: 700px;
         }
 
         .previous-button-container {
             width: 100px;
             height: 36px;
+        }
+
+        .next-button-container {
+            width: 100px;
+            height: 36px;
+            margin-left: 300px;
         }
 
         .container {
@@ -141,11 +146,6 @@
             font-size: 1.1em;
         }
 
-        .admin-actions {
-            margin-top: 30px;
-            text-align: center;
-        }
-
         .admin-actions button {
             padding: 15px 30px;
             background-color: #555;
@@ -158,14 +158,6 @@
 
         .admin-actions button:hover {
             background-color: #666;
-        }
-
-        .user-info {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            color: #333;
-            font-size: 1.2em;
         }
 
         .search-history {
@@ -214,6 +206,25 @@
             font-size: 14px;
             text-decoration: none;
         }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f5c6cb;
+            text-align: center;
+        }
+        .page-info {
+            font-size: 1.1em;
+            width: 50px;
+            margin-left: 300px;
+            color: #333;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -250,16 +261,24 @@
                 </form>
             </div>
 
-            <form th:if="${purchases.hasNext()}" method="get" onsubmit="updatePageNumber(event, 'next')">
-                <input type="hidden" name="page" th:value="${purchases.number + 1}" />
-                <button class="next-button">Next</button>
-            </form>
+            <span class="page-info">
+                <span th:text="${purchases.number + 1}">1</span> /
+                <span th:text="${purchases.totalPages}">10</span>
+            </span>
+
+            <div class="next-button-container">
+                <form th:if="${purchases.hasNext()}" method="get" onsubmit="updatePageNumber(event, 'next')">
+                    <input type="hidden" name="page" th:value="${purchases.number + 1}" />
+                    <button class="next-button">Next</button>
+                </form>
+            </div>
         </div>
     </div>
 
     <div class="search-history" th:if="${access.toString() == 'ADMIN'}">
+        <div th:if="${error != null}" class="error-message" th:text="${error}"></div>
         <label for="searchInput">Search for other users' history</label><br>
-        <input type="text" id="searchInput" placeholder="Enter username">
+        <input type="text" id="searchInput" placeholder="Enter email">
         <button onclick="searchHistory()">Search</button>
     </div>
 </div>
@@ -270,6 +289,7 @@
         const url = new URL(window.location);
         url.searchParams.set('byDate', 'true');
         url.searchParams.set('byPrice', 'false');
+        url.searchParams.set('page', '0');
         const newUrl = url.toString();
         window.history.replaceState({}, '', url);
         window.location.reload();
@@ -280,6 +300,7 @@
         const url = new URL(window.location);
         url.searchParams.set('byDate', 'false');
         url.searchParams.set('byPrice', 'true');
+        url.searchParams.set('page', '0');
         const newUrl = url.toString();
         window.history.replaceState({}, '', url);
         window.location.reload();
@@ -290,6 +311,7 @@
         console.log("Searching history for:", searchTerm);
         const url = new URL(window.location);
         url.searchParams.set('otherCustomer', searchTerm);
+        url.searchParams.set('page', '0');
         window.history.replaceState({}, '', url);
         window.location.reload();
     }

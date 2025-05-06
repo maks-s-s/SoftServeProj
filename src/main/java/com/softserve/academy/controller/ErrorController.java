@@ -2,6 +2,7 @@ package com.softserve.academy.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 
     @RequestMapping("/error")
-    public String handleError(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String handleError(HttpServletResponse response, Model model) {
         Integer statusCode = response.getStatus();
 
         System.out.println("Error Code: " + statusCode);
@@ -21,6 +22,12 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
 
         model.addAttribute("errorCode", statusCode);
 
+        return "errors/error";
+    }
+
+    @RequestMapping("/error-403")
+    public String handleError403(Model model) {
+        model.addAttribute("errorCode", 403);
         return "errors/error";
     }
 }

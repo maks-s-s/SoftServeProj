@@ -63,11 +63,31 @@
             font-size: 0.9em;
             margin-left: 5px;
         }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .back-to-login {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        .back-to-login:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
 <div class="signup-container">
     <h2>Sign Up</h2>
+
+    <div th:if="${error != null}" class="error-message" th:text="${error}"></div>
+
     <form action="/customer/add" method="post">
         <input type="text" name="name" placeholder="Name" required>
         <input type="email" name="email" placeholder="Email" required>
@@ -78,6 +98,9 @@
             <label for="agree">Agree on the terms</label>
         </div>
         <button type="submit">Sign Up</button>
+    </form>
+    <form action="/">
+        <button type="submit" class="back-to-login">Back to Login</button>
     </form>
 </div>
 </body>

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -25,8 +26,14 @@ public class CustomerViewController {
                                 @RequestParam("email") String email,
                                 @RequestParam("password") String password,
                                 @RequestParam("phoneNumber") String phoneNumber,
-                                Model model, HttpSession session) {
-        if (!(session.getAttribute("customer") == null)) {return "redirect:/home";}
+                                Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("customer") != null) {return "redirect:/home";}
+
+        if (custSrv.existsByEmail(email) || custSrv.existsByPhoneNumber(phoneNumber)) {
+            redirectAttributes.addFlashAttribute("error", "This email ot phone number is alredy taken.");
+            return "redirect:/SignUp";
+        }
+
         Customer customer = Customer.builder()
                 .name(name)
                 .email(email)
@@ -34,7 +41,6 @@ public class CustomerViewController {
                 .phoneNumber(phoneNumber)
                 .role(Role.USER)
                 .build();
-        System.out.println(customer);
         custSrv.saveCustomer(customer);
 
         model.addAttribute("customer", customer);
@@ -44,7 +50,6 @@ public class CustomerViewController {
 
     @PostMapping("/customer/verify")
     public String verify (@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session, Model model) {
-        if (session.getAttribute("customer") == null) {return "redirect:/";}
         Customer customer = custSrv.findByEmail(email);
         if (customer != null && customer.getPassword().equals(password)) {
             session.setAttribute("customer", customer);

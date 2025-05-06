@@ -32,7 +32,6 @@ public class PurchaseRestController {
         return ResponseEntity.badRequest().build();
     }
 
-    // The purchase history page works with {/purchaseHistory} endpoint, in SignController, not with this
     @GetMapping("/{customer-id}")
     public Page<Purchase> getPurchasesByCustomerId(@PathVariable("customer-id") Long custId,
                                                    @RequestParam(name="size", defaultValue = "4") int size,
