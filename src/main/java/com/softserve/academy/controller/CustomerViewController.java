@@ -25,7 +25,8 @@ public class CustomerViewController {
                                 @RequestParam("email") String email,
                                 @RequestParam("password") String password,
                                 @RequestParam("phoneNumber") String phoneNumber,
-                                Model model) {
+                                Model model, HttpSession session) {
+        if (!(session.getAttribute("customer") == null)) {return "redirect:/home";}
         Customer customer = Customer.builder()
                 .name(name)
                 .email(email)
@@ -43,6 +44,7 @@ public class CustomerViewController {
 
     @PostMapping("/customer/verify")
     public String verify (@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session, Model model) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
         Customer customer = custSrv.findByEmail(email);
         if (customer != null && customer.getPassword().equals(password)) {
             session.setAttribute("customer", customer);
@@ -56,6 +58,7 @@ public class CustomerViewController {
 
     @GetMapping("/customer/logout")
     public String logout (HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
         session.invalidate();
         return "redirect:/";
     }

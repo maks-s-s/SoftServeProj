@@ -27,17 +27,20 @@ public class SignController {
     private CustomerService custSvc;
 
     @GetMapping("/")
-    public String signInHome() {
+    public String signInHome(HttpSession session) {
+        if (!(session.getAttribute("customer") == null)) {return "redirect:/home";}
         return "signIn";
     }
 
     @GetMapping("/SignUp")
-    public String signUp() {
+    public String signUp(HttpSession session) {
+        if (!(session.getAttribute("customer") == null)) {return "redirect:/home";}
         return "signUp";
     }
 
     @GetMapping("/home")
     public String goHome(Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
         model.addAttribute("customer", session.getAttribute("customer"));
         return "home";
     }
@@ -49,6 +52,7 @@ public class SignController {
                                     @RequestParam(name="otherCustomer", defaultValue = "null") String otherCustomer,
                                     @RequestParam(name="size", defaultValue = "4") int size,
                                     @RequestParam(name="page", defaultValue = "0") int page) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
         Customer customer = (Customer) session.getAttribute("customer");
         model.addAttribute("access", customer.getRole());
         System.out.println(customer.getRole());

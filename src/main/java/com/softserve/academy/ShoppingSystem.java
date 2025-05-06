@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 
 @SpringBootApplication
-public class ShoppingSystem {
+public class    ShoppingSystem {
 
     public static void main(String[] args) {
         SpringApplication.run(com.softserve.academy.ShoppingSystem.class, args);
