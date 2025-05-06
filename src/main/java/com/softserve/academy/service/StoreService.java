@@ -68,6 +68,7 @@ public class StoreService {
         }
         return new PageImpl<>(pageContent, pageable, total);
     }
+
     @Transactional
     public boolean changeStoreById(Long storeId,StoreDTO storeDTO){
         Store store = storeRepo.findById(storeId).orElse(null);
@@ -100,4 +101,17 @@ public class StoreService {
         storeRepo.delete(store);
         return true;
     }
+    @Transactional
+    public boolean deleteProductFromStoreById( Long storeId , Long productId){
+        Store store = storeRepo.findById(storeId).orElse(null);
+        Product product = prodRepo.findById(productId).orElse(null);
+        if (store==null||product==null){return false;}
+        Set<Store> storesSET = product.getStores();
+        Set<Product> productsSET = store.getProducts();
+        if(!productsSET.contains(product)){return false;}
+        storesSET.remove(store);
+        productsSET.remove(product);
+        return true;
+    }
+
 }

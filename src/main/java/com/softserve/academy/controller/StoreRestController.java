@@ -37,7 +37,7 @@ public class StoreRestController {
     public ResponseEntity<Void> addProductToStore(@PathVariable("id") Long storeId,
                                                   @PathVariable("productId") Long productId){
         if (storeSvc.addProductToStore(storeId, productId)) {
-
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
     }
@@ -64,6 +64,14 @@ public class StoreRestController {
             return ResponseEntity.ok().build();
         };
         return ResponseEntity.notFound().build();
+    }
+    @DeleteMapping("{store-id}/{prod-id}")
+    public ResponseEntity<Void> deleteProductFromStore(@PathVariable("store-id") Long storeId, @PathVariable("prod-id") Long prodId){
+        if(storeSvc.deleteProductFromStoreById(storeId,prodId)){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+
     }
 
 }
