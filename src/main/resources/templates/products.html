@@ -3,8 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        :root {
+            --primary: #2563eb; /* Синий (можно поменять) */
+            --secondary: #4b5563; /* Серый */
+            --light: #f9fafb; /* Светлый фон */
+            --dark: #111827; /* Тёмный текст */
+            --border: #e5e7eb; /* Границы */
+            --text-light: #f8f9fa;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Шапка */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* Сетка товаров */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        /* Карточка товара */
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .product-info {
+            padding: 16px;
+        }
+
+        .product-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .product-old-price {
+            text-decoration: line-through;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+
+        .product-badge {
+            display: inline-block;
+            background: #ef4444;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .page-buttons{
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        .page-btn{
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: Arial, sans-serif;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            color: #212529;
+            border: 2px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 25px;
+        }
+        .page-btn:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .page-btn:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .page-btn.next {
+            background: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        .page-btn.next:hover {
+            background: #e9ecef;
+        }
+        .page-btn.prev {
+            background: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        .page-btn.prev:hover {
+            background: #e9ecef;
+        }
+        .page-info {
+            font-size: 16px;
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+
+    <div class="header">
+        <h1>Product catalog</h1>
+        <p th:text="'All products from store '+${store.name}"> </p>
+    </div>
+
+    <div class="product-card" th:each="products : ${products}">
+        <div class="product-info">
+            <span class="product-badge">Sale 25%</span>
+            <h3 class="product-title" th:text="${products.name}"></h3>
+            <div>
+                <span class="product-price" th:text=" '$' +  ${products.price}"></span>
+                <span class="product-old-price" th:text=" '$' + ${products.price * 1.25}"></span>
+            </div>
+        </div>
+    </div>
+    <div class= "page-buttons">
+        <a  th:if="${hasPrev}"
+            th:href="@{/ShowProdByStore/{id}(id=${id},page=${currentPage - 1}, size=${products.size})}" class="page-btn prev">←</a>
+        <span class="page-info" th:text=" ${currentPage + 1 + '/ ' + totalPages}"> </span>
+        <a th:if="${hasNext}"
+           th:href="@{/ShowProdByStore/{id}(id=${id},page=${currentPage + 1}, size=${products.size})}" class="page-btn next" >→</a>
+    </div>
+</div>
 
 </body>
 </html>

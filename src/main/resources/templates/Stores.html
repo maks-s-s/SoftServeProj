@@ -170,7 +170,9 @@
         <h3 class = "store-phoneNumber" th:text="${store.contactNumber}"></h3>
       </div>
       <div class = "store-buttons">
-        <a hreh="#" class="btn">Visit store</a>
+        <form th:action="@{'/ShowProdByStore/' + ${store.id}}" method="get">
+        <button type="submit" class="btn">Visit store</button>
+        </form>
 
       </div>
     </div>

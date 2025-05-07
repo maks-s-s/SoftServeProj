@@ -1,5 +1,6 @@
 package com.softserve.academy.service;
 
+import com.softserve.academy.dto.ProductDTO;
 import com.softserve.academy.dto.StoreDTO;
 import com.softserve.academy.mappers.StoreMapper;
 import com.softserve.academy.model.Product;
@@ -112,6 +113,9 @@ public class StoreService {
         storesSET.remove(store);
         productsSET.remove(product);
         return true;
+    }
+    public Page<Product> getProductsByStore(Long id, Pageable pageable) {
+        return prodRepo.findByStoreId(id, pageable);
     }
 
 }

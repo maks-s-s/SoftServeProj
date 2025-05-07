@@ -69,5 +69,4 @@ public class ProductService {
         if (catRepo.findById(id).isEmpty()) {return null;}
         return prodRepo.findProductByCategory_Id(id, pageable);
     }
-
 }
