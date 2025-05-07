@@ -225,6 +225,18 @@
             color: #333;
             display: inline-block;
         }
+        .empty-message {
+            text-align: center;
+            font-size: 1.5em;
+            color: #888;
+            font-weight: bold;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -243,6 +255,9 @@
     </div>
 
     <div class="purchase-history">
+        <div th:if="${purchases.content.isEmpty()}" class="empty-message">
+            <p>Your purchase history is empty.</p>
+        </div>
         <div th:each="purchase : ${purchases.content}">
             <div class="purchase-item">
                 <p>Purchase Date:
@@ -261,7 +276,7 @@
                 </form>
             </div>
 
-            <span class="page-info">
+            <span class="page-info" th:if="${purchases.totalPages} > 1">
                 <span th:text="${purchases.number + 1}">1</span> /
                 <span th:text="${purchases.totalPages}">10</span>
             </span>

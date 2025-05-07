@@ -43,21 +43,19 @@ public class CustomerViewController {
                 .build();
         custSrv.saveCustomer(customer);
 
-        model.addAttribute("customer", customer);
-
         return "redirect:/";
     }
 
     @PostMapping("/customer/verify")
-    public String verify (@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session, Model model) {
+    public String verify (@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session, RedirectAttributes redirectAttributes) {
         Customer customer = custSrv.findByEmail(email);
         if (customer != null && customer.getPassword().equals(password)) {
             session.setAttribute("customer", customer);
             return "redirect:/home";
         }
         else {
-            model.addAttribute("error", "Wrong password");
-            return "signIn";
+            redirectAttributes.addFlashAttribute("error", "Wrong password");
+            return "redirect:/";
         }
     }
 
