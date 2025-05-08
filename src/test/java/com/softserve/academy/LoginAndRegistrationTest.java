@@ -69,11 +69,25 @@ public class LoginAndRegistrationTest {
     }
 
     @Test
-    void signIn_shouldRedirectToSignInPage_whenInvalidCredentials() throws Exception {
+    void signIn_shouldRedirectToSignInPage_whenInvalidPassword() throws Exception {
         String email = "example@example.com";
         String password = "1example";
 
         when(customerService.findByEmail(email)).thenReturn(customer);
+
+        mockMvc.perform(post("/customer/verify")
+                        .param("email", email)
+                        .param("password", password)
+                        .session(session))
+                .andExpect(flash().attributeExists("error"));
+    }
+
+    @Test
+    void signIn_shouldRedirectToSignInPage_whenInvalidEmail() throws Exception {
+        String email = "example@example.com123";
+        String password = "example";
+
+        when(customerService.findByEmail(email)).thenReturn(null);
 
         mockMvc.perform(post("/customer/verify")
                         .param("email", email)

@@ -49,5 +49,4 @@ public class PurchaseService {
         cust.addPurchase(newPurchase);
         return true;
     }
-
 }

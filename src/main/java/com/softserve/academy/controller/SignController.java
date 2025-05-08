@@ -3,22 +3,15 @@ package com.softserve.academy.controller;
 import com.softserve.academy.model.Customer;
 import com.softserve.academy.model.Purchase;
 import com.softserve.academy.model.Role;
-import com.softserve.academy.repository.CustomerRepository;
 import com.softserve.academy.service.CustomerService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class SignController {
@@ -44,7 +37,7 @@ public class SignController {
     public String goHome(Model model, HttpSession session) {
         if (session.getAttribute("customer") == null) {return "redirect:/";}
         model.addAttribute("customer", session.getAttribute("customer"));
-        return "home";
+        return "homePage";
     }
 
     @GetMapping("/purchaseHistory")
@@ -66,7 +59,7 @@ public class SignController {
             }
             if (!custSvc.existsByEmail(otherCustomer)) {
                 redirectAttributes.addFlashAttribute("error", "There aren't any users with this email.");
-                return "redirect:/purchaseHistory";
+                return "redirect:/purchaseHistoryPage";
             }
             customer = custSvc.findByEmail(otherCustomer);
         }
@@ -81,6 +74,6 @@ public class SignController {
         purchases = purchaseRestController.getPurchasesByCustomerId(customer.getId(), size, page, sortByDate, sortByPrice);
         model.addAttribute("customer", customer);
         model.addAttribute("purchases", purchases);
-        return "purchaseHistory";
+        return "purchaseHistoryPage";
     }
 }
