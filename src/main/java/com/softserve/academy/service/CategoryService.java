@@ -1,5 +1,6 @@
 package com.softserve.academy.service;
 
+import aj.org.objectweb.asm.ConstantDynamic;
 import com.softserve.academy.model.Category;
 import com.softserve.academy.model.Customer;
 import com.softserve.academy.model.Product;
@@ -25,5 +26,9 @@ public class CategoryService {
     }
     public void addCategory(Category category) {
         categoryRepository.save(category);
+    }
+
+    public Category getCategoryById(Long id) {
+        return categoryRepository.findById(id).orElse(null);
     }
 }

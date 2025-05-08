@@ -5,11 +5,11 @@
     <title>Title</title>
     <style>
         :root {
-            --primary: #2563eb; /* Синий (можно поменять) */
-            --secondary: #4b5563; /* Серый */
-            --light: #f9fafb; /* Светлый фон */
-            --dark: #111827; /* Тёмный текст */
-            --border: #e5e7eb; /* Границы */
+            --primary: #2563eb;
+            --secondary: #4b5563;
+            --light: #f9fafb;
+            --dark: #111827;
+            --border: #e5e7eb;
             --text-light: #f8f9fa;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
@@ -241,7 +241,7 @@
         <p th:text="'Name: ' + ${customer.name}"></p>
         <p th:text="'Email: ' + ${customer.email}"></p>
         <p th:text="'Phone Number: ' + ${customer.phoneNumber}"></p>
-        <p>Access: Not Implemented</p>
+        <p th:text="'Access: ' + ${customer.role}"></p>
     </div>
 
     <div class="menu-items">
