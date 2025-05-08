@@ -143,7 +143,11 @@
     <div class="content">
         <div class="header" th:text="'Welcome ' + ${customer.name}"></div>
         <div class="buttons">
-            <button class="btn">BUY</button>
+            <form action="/buy">
+                <input type="hidden" name="customerId" th:value="${customer.id}">
+                <button type="submit" class="btn">BUY</button>
+            </form>
+
             <button class="btn">SELL</button>
         </div>
     </div>

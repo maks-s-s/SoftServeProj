@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+
+      --text-light: #f8f9fa;
+      --bg-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    body{
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background: var(--bg-gradient);
+      color: white;
+      padding: 2rem 0;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .header h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+    .store-grid {
+      display: grid;
+      grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 20px;
+    }
+    .store-card {
+      background: whitesmoke;
+      overflow: hidden;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .store-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    .store-info {
+      padding: 10px;
+      padding-bottom: 0px;
+    }
+
+    .store-name{
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0 0 10px;
+      color: #333
+    }
+    .stote-location{
+      font-size: 18px;
+      font-weight: 400;
+      color: #333
+    }
+    .store-phoneNumber{
+      margin: 10px 0 10px;
+    }
+    .store-buttons{
+      display: flex;
+      padding: 10px;
+      border-top: 4px solid gray;
+    }
+    .btn{
+      padding:15px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s;
+      background: #2196f3;
+      color: white;
+    }
+    .btn:hover{
+      background: #1976d2;
+
+    }
+    .container h1{
+      text-align: center;
+      color: #333333;
+      margin-bottom: 20px;
+    }
+    .page-buttons{
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 15px;
+    }
+    .page-btn{
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: Arial, sans-serif;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+      color: #212529;
+      border: 2px solid #dee2e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 100px;
+    }
+    .page-btn:hover {
+      background: #e9ecef;
+      border-color: #adb5bd;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .page-btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+    .page-btn.next {
+      background: #f8f9fa;
+      border-color: #dee2e6;
+    }
+    .page-btn.next:hover {
+      background: #e9ecef;
+    }
+    .page-btn.prev {
+      background: #f8f9fa;
+      border-color: #dee2e6;
+    }
+    .page-btn.prev:hover {
+      background: #e9ecef;
+    }
+    .page-info {
+      font-size: 16px;
+      color: #6c757d;
+    }
+    .menu {
+      width: 300px;
+      color: white;
+      position: fixed;
+      top: 0;
+      right: -300px;
+      height: 100%;
+      transition: right 0.3s ease-in-out;
+      z-index: 1000;
+      background-color: #333;
+    }
+
+    .menu.open {
+      right: 0;
+      background-color: #333;
+    }
+
+    .menu-header {
+      padding: 20px;
+      background-color: #444;
+      font-size: 1.5em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu-items {
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu-items button {
+      padding: 15px;
+      width: 100%;
+      background-color: #555;
+      border: none;
+      border-bottom: 1px solid #666;
+      text-align: center;
+      color: white;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+
+    .menu-items button:hover {
+      background-color: #666;
+    }
+    .user-info {
+      color: #ccc;
+      font-size: 1.2em;
+      padding-top: 20px;
+      text-align: right;
+    }
+
+    .close-menu {
+      font-size: 1.5em;
+      color: #444;
+      cursor: pointer;
+    }
+
+    .user-info p {
+      margin: 5px 0;
+    }
+
+    .user-info .profile-icon {
+      cursor: pointer;
+      font-size: 1.8em;
+    }
+
+    .info p {
+      padding-left: 10px;
+    }
+
+    .info {
+      padding-bottom: 20px;
+      padding-top: 10px;
+    }
+    .menu-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+  </style>
+</head>
+<body>
+<div id="menu" class="menu">
+  <div class="menu-header">
+    <p>Menu</p>
+    <button class="close-menu" onclick="toggleMenu()">×</button>
+  </div>
+
+  <div id="info" class="info">
+    <p th:text="'Name: ' + ${customer.name}"></p>
+    <p th:text="'Email: ' + ${customer.email}"></p>
+    <p th:text="'Phone Number: ' + ${customer.phoneNumber}"></p>
+    <p>Access: Not Implemented</p>
+  </div>
+
+  <div class="menu-items">
+    <form action="/purchaseHistory">
+      <button type="submit">Purchase History</button>
+    </form>
+    <form action="customer/logout">
+      <button type="submit">Log Out</button>
+    </form>
+  </div>
+</div>
+<header class="header">
+
+  <h1 class="headerh1">Available stores</h1>
+</header>
+<div class = "menu-container">
+  <div class="user-info">
+    <button class="profile-icon" onclick="toggleMenu()">☰</button>
+  </div>
+</div>
+<div class = "container">
+  <h1>Stores</h1>
+  <div class = "store-grid">
+    <div class ="store-card" th:each="store : ${store}">
+      <div class = "store-info">
+        <h3 class ="store-name" th:text="${store.name}"></h3>
+        <span class = "stote-location" th:text="${store.location}"></span>
+        <h3 class = "store-phoneNumber" th:text="${store.contactNumber}"></h3>
+      </div>
+      <div class = "store-buttons">
+        <form th:action="@{'/ShowProdByStore/' + ${store.id}}" method="get">
+          <input type="hidden" name="customerId" th:value="${customer.id}">
+        <button type="submit" class="btn">Visit store</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <div class = "page-buttons">
+    <a th:if="${hasPrev}"
+       th:href="@{/StoreViewAll(page=${currentPage - 1}, size=${store.size})}"
+       class="page-btn prev">← Prev</a>
+    <span class="page-info" th:text=" ${currentPage + 1 + '/ ' + totalPages}"></span>
+    <a th:if="${hasNext}"
+       th:href="@{/StoreViewAll(page=${currentPage + 1}, size=${store.size})}"
+       class="page-btn next">Next →</a>
+  </div>
+
+</div>
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('menu');
+    menu.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
