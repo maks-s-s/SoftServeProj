@@ -92,10 +92,118 @@
             font-size: 18px;
             color: #222;
         }
+        .menu {
+            width: 300px;
+            color: white;
+            position: fixed;
+            top: 0;
+            right: -300px;
+            height: 100%;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            background-color: #333;
+        }
+
+        .menu.open {
+            right: 0;
+            background-color: #333;
+        }
+
+        .menu-header {
+            padding: 20px;
+            background-color: #444;
+            font-size: 1.5em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-items {
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-items button {
+            padding: 15px;
+            width: 100%;
+            background-color: #555;
+            border: none;
+            border-bottom: 1px solid #666;
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .menu-items button:hover {
+            background-color: #666;
+        }
+        .user-info {
+            color: #ccc;
+            font-size: 1.2em;
+            padding-top: 20px;
+            text-align: right;
+        }
+
+        .close-menu {
+            font-size: 1.5em;
+            color: #444;
+            cursor: pointer;
+        }
+
+        .user-info p {
+            margin: 5px 0;
+        }
+
+        .user-info .profile-icon {
+            cursor: pointer;
+            font-size: 1.8em;
+        }
+
+        .info p {
+            padding-left: 10px;
+        }
+
+        .info {
+            padding-bottom: 20px;
+            padding-top: 10px;
+        }
+        .menu-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
     </style>
 </head>
 <body>
+<div id="menu" class="menu">
+    <div class="menu-header">
+        <p>Menu</p>
+        <button class="close-menu" onclick="toggleMenu()">×</button>
+    </div>
+
+    <div id="info" class="info">
+        <p th:text="'Name: ' + ${customer.name}"></p>
+        <p th:text="'Email: ' + ${customer.email}"></p>
+        <p th:text="'Phone Number: ' + ${customer.phoneNumber}"></p>
+        <p>Access: Not Implemented</p>
+    </div>
+
+    <div class="menu-items">
+        <form action="/purchaseHistory">
+            <button type="submit">Purchase History</button>
+        </form>
+        <form action="customer/logout">
+            <button type="submit">Log Out</button>
+        </form>
+    </div>
+</div>
 <header class="header">
+    <div class = "menu-container">
+        <div class="user-info">
+            <button class="profile-icon" onclick="toggleMenu()">☰</button>
+        </div>
+    </div>
     <h1 class="headerh1">All categories</h1>
 </header>
 <div class="container">
@@ -112,6 +220,11 @@
         </li>
     </ul>
 </div>
-
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('open');
+    }
+</script>
 </body>
 </html>
