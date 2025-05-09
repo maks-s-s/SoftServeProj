@@ -280,7 +280,6 @@
       </div>
       <div class = "store-buttons">
         <form th:action="@{'/ShowProdByStore/' + ${store.id}}" method="get">
-          <input type="hidden" name="customerId" th:value="${customer.id}">
         <button type="submit" class="btn">Visit store</button>
         </form>
 

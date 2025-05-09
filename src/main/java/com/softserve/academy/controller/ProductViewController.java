@@ -6,9 +6,11 @@ import com.softserve.academy.model.Customer;
 import com.softserve.academy.model.Product;
 import com.softserve.academy.model.Store;
 import com.softserve.academy.repository.CustomerRepository;
+import com.softserve.academy.repository.ProductRepository;
 import com.softserve.academy.service.CategoryService;
 import com.softserve.academy.service.ProductService;
 import com.softserve.academy.service.StoreService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,21 +27,22 @@ public class ProductViewController {
     CustomerRepository customerRepository;
     ProductService productService;
     CategoryService categoryService;
+    ProductRepository productRepository;
     @Autowired
-    ProductViewController(StoreService storeService, CustomerRepository customerRepository, ProductService productService, CategoryService categoryService) {
+    ProductViewController(StoreService storeService, CustomerRepository customerRepository, ProductService productService, CategoryService categoryService, ProductRepository productRepository) {
         this.storeService = storeService;
         this.customerRepository = customerRepository;
         this.productService = productService;
         this.categoryService = categoryService;
+        this.productRepository = productRepository;
     }
 
     @GetMapping("/ShowProdByStore/{id}")
-    public String ShowProdByStore(@RequestParam("customerId") Long customerId,@PathVariable("id") Long id, Model model, @RequestParam(name = "size", defaultValue = "3") int size, @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String ShowProdByStore(HttpSession session,@PathVariable("id") Long id, Model model, @RequestParam(name = "size", defaultValue = "3") int size, @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page,size);
         Store store = storeService.getStoreById(id);
         Page<Product> products = storeService.getProductsByStore(id,pageable);
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found"));
-        model.addAttribute("customer", customer);
+        model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("id", id);
         model.addAttribute("store", store);
         model.addAttribute("products", products);
@@ -58,5 +61,17 @@ public class ProductViewController {
         model.addAttribute("prods", prods);
         model.addAttribute("catName", categoryService.getCategoryById(id).getName());
         return "ProdsByCategory";
+    }
+    @GetMapping("/getAllProd")
+    public String showProds(HttpSession session, Model model, @RequestParam(name = "size", defaultValue = "6") int size, @RequestParam(name = "page", defaultValue = "0") int page){
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Product> products = productRepository.findAll(pageable);
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("hasPrev", page > 0);
+        model.addAttribute("hasNext", page < products.getTotalPages() - 1);
+        return "allProducts";
     }
 }
