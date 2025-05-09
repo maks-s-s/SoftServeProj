@@ -272,14 +272,14 @@
         <p th:text="'All products from store '+${store.name}"> </p>
     </div>
 
-    <div class="product-card" th:each="products : ${products}">
-        <a th:href="@{'/buy/' + ${products.id}}">
+    <div class="product-card" th:each="product : ${products}">
+        <a th:href="@{'/buy/' + ${product.id}}">
             <div class="product-info">
-                <span class="product-badge">Sale 25%</span>
-                <h3 class="product-title" th:text="${products.name}"></h3>
+                <span class="product-badge" th:if="${product.discount != 0}" th:text="'Sale ' + ${#numbers.formatDecimal(product.discount * 100, 0, 0)} + '%'"></span>
+                <h3 class="product-title" th:text="${product.name}"></h3>
                 <div>
-                    <span class="product-price" th:text=" '$' +  ${products.price}"></span>
-                    <span class="product-old-price" th:text=" '$' + ${products.price * 1.25}"></span>
+                    <span class="product-price" th:text="'₴' + ${#numbers.formatDecimal(product.price * (1 - product.discount), 2, 2)}"></span>
+                    <span class="product-old-price" th:if="${product.discount != 0}" th:text="'₴' + ${product.price}"></span>
                 </div>
             </div>
         </a>

@@ -33,6 +33,8 @@ public class StoreViewController {
                                Model model,
                                @RequestParam(name = "size", defaultValue = "3") int size,
                                @RequestParam(name = "page", defaultValue = "0") int page) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         Pageable pageable = PageRequest.of(page,size);
         Page<StoreDTO> store = storeSrv.getAllStores(pageable);
         model.addAttribute("customer", session.getAttribute("customer"));

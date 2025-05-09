@@ -72,8 +72,8 @@ public class ProductRestController {
         return ResponseEntity.ok(products.map(ProductMapper::toProductDTO));
     }
 
-    @PutMapping("/setDiscount/{prodId}")
-    public void setDiscount(@PathVariable("prodId") Long id, @RequestParam double discount) {
+    @PutMapping("/setDiscount")
+    public void setDiscount(@RequestParam("prodId") Long id, @RequestParam("discount") double discount) {
         prodSrv.setDiscountById(id, discount);
     }
 
@@ -93,4 +93,5 @@ public class ProductRestController {
         prodSrv.updateNullDescriptions();
         return ResponseEntity.ok("All products with null description have been updated to an empty string.");
     }
+
 }

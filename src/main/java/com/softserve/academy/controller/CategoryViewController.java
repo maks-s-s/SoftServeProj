@@ -36,11 +36,12 @@ public class CategoryViewController {
                                  Model model,
                                  @RequestParam(name = "size", defaultValue = "5") int size,
                                  @RequestParam(name = "page", defaultValue = "0") int page) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
         Pageable pageable = PageRequest.of(page, size);
         Page<Category> categories = catSvc.findAllCategories(pageable);
         System.out.println(categories);
         model.addAttribute("categories", categories);
         model.addAttribute("customer", session.getAttribute("customer"));
-        return "AllCategories"; // categories.html
+        return "AllCategories";
     }
 }

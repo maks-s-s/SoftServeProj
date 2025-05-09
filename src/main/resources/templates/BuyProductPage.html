@@ -251,8 +251,8 @@
         <div class="product-info">
             <h3 class="product-title" th:text="${product.name}"></h3>
             <div>
-                <span class="product-price" th:text="@{'₴'+ ${product.price - (product.price * product.discount)}}"></span>
-                <span class="product-old-price" th:text="@{'₴'+${product.price}}"></span>
+                <span class="product-price" th:text="'₴' + ${#numbers.formatDecimal(product.price * (1 - product.discount), 2, 2)}"></span>
+                <span class="product-old-price" th:if="${product.discount != 0}" th:text="'₴' + ${product.price}"></span>
             </div>
 
             <p class="product-description" th:text="${product.description}"></p>
