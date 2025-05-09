@@ -38,12 +38,11 @@ public class ProductViewController {
     }
 
     @GetMapping("/ShowProdByStore/{id}")
-    public String ShowProdByStore(@RequestParam("customerId") Long customerId,@PathVariable("id") Long id, Model model, @RequestParam(name = "size", defaultValue = "3") int size, @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String ShowProdByStore(@PathVariable("id") Long id, Model model, @RequestParam(name = "size", defaultValue = "3") int size, @RequestParam(name = "page", defaultValue = "0") int page, HttpSession session) {
         Pageable pageable = PageRequest.of(page,size);
         Store store = storeService.getStoreById(id);
         Page<Product> products = storeService.getProductsByStore(id,pageable);
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found"));
-        model.addAttribute("customer", customer);
+        model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("id", id);
         model.addAttribute("store", store);
         model.addAttribute("products", products);
