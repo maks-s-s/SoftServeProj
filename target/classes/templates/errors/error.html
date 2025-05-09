@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="'Error ' + ${errorCode}">Error</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      padding: 50px;
+    }
+    h1 {
+      font-size: 3em;
+      color: #333;
+    }
+    p {
+      font-size: 1.2em;
+      color: #666;
+    }
+    img {
+      max-width: 400px;
+      margin: 20px 0;
+    }
+    .home-link {
+      text-decoration: none;
+      font-size: 1.1em;
+      color: #007bff;
+    }
+    .home-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 th:text="'Error ' + ${errorCode}"></h1>
+  <img th:src="@{'https://http.cat/' + ${errorCode} + '.jpg'}" alt="Error Image">
+  <p th:if="${session.customer != null}"><a class="home-link" href="/home">Back to home page</a></p>
+  <p th:if="${session.customer == null}"><a class="home-link" href="/">Back to Sign In page</a></p>
+</div>
+</body>
+</html>
