@@ -191,13 +191,15 @@
 </header>
 <div class ="center-container">
     <div class="button-container">
-    <button type="button">Buy</button>
+        <form action="getAllProd" method="get">
+            <button type="submit">Buy</button>
+        </form>
+
+
     <form action="/category/goToCategories" method="get">
-        <input type="hidden" name="customerId" th:value="${customer.id}">
         <button type="submit">All categories</button>
     </form>
     <form action="/StoreViewAll" method="get">
-        <input type="hidden" name="customerId" th:value="${customer.id}">
         <button type="submit">Stores</button>
     </form>
 </div>

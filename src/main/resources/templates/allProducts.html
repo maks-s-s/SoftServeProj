@@ -28,7 +28,6 @@
             padding: 20px;
         }
 
-        /* Шапка */
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -226,16 +225,6 @@
             top: 20px;
             right: 20px;
         }
-        a {
-            color: inherit;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
     </style>
 </head>
 <body>
@@ -269,25 +258,25 @@
     </div>
     <div class="header">
         <h1>Product catalog</h1>
-        <p th:text="'All products from store '+${store.name}"> </p>
+        <p> All products</p>
     </div>
 
-    <div class="product-card" th:each="products : ${products}">
-        <a th:href="@{'/buy/' + ${products.id}}">
+    <div class="products-grid">
+        <div class="product-card" th:each="products : ${products}">
             <div class="product-info">
                 <span class="product-badge">Sale 25%</span>
                 <h3 class="product-title" th:text="${products.name}"></h3>
                 <div>
-                    <span class="product-price" th:text=" '$' +  ${products.price}"></span>
-                    <span class="product-old-price" th:text=" '$' + ${products.price * 1.25}"></span>
+                    <span class="product-price" th:text="'$' + ${products.price}"></span>
+                    <span class="product-old-price" th:text="'$' + ${products.price * 1.25}"></span>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
     <div class= "page-buttons">
         <a  th:if="${hasPrev}"
             th:href="@{/ShowProdByStore/{id}(id=${id},page=${currentPage - 1}, size=${products.size},customerId=${customer.id})}" class="page-btn prev">←</a>
-        <span class="page-info" th:text=" ${currentPage + 1 + '/ ' + totalPages}"> </span>
+        <span class="page-info" th:text=" ${currentPage + 1 + '/' + totalPages}"> </span>
         <a th:if="${hasNext}"
            th:href="@{/ShowProdByStore/{id}(id=${id},page=${currentPage + 1}, size=${products.size},customerId=${customer.id})}" class="page-btn next" >→</a>
     </div>

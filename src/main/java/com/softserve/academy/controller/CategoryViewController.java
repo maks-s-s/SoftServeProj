@@ -5,6 +5,7 @@ import com.softserve.academy.model.Customer;
 import com.softserve.academy.repository.CustomerRepository;
 import com.softserve.academy.service.CategoryService;
 import com.softserve.academy.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,16 +32,15 @@ public class CategoryViewController {
     }
 
     @GetMapping("/goToCategories")
-    public String showCategories(@RequestParam("customerId") Long customerId,
-            Model model,
-            @RequestParam(name = "size", defaultValue = "5") int size,
-            @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String showCategories(HttpSession session,
+                                 Model model,
+                                 @RequestParam(name = "size", defaultValue = "5") int size,
+                                 @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Category> categories = catSvc.findAllCategories(pageable);
         System.out.println(categories);
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found"));
         model.addAttribute("categories", categories);
-        model.addAttribute("customer", customer);
+        model.addAttribute("customer", session.getAttribute("customer"));
         return "AllCategories"; // categories.html
     }
 }
