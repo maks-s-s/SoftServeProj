@@ -6,6 +6,7 @@ import com.softserve.academy.model.Customer;
 import com.softserve.academy.model.Product;
 import com.softserve.academy.model.Store;
 import com.softserve.academy.repository.CustomerRepository;
+import com.softserve.academy.repository.ProductRepository;
 import com.softserve.academy.service.CategoryService;
 import com.softserve.academy.service.ProductService;
 import com.softserve.academy.service.StoreService;
@@ -26,12 +27,14 @@ public class ProductViewController {
     CustomerRepository customerRepository;
     ProductService productService;
     CategoryService categoryService;
+    ProductRepository productRepository;
     @Autowired
-    ProductViewController(StoreService storeService, CustomerRepository customerRepository, ProductService productService, CategoryService categoryService) {
+    ProductViewController(StoreService storeService, CustomerRepository customerRepository, ProductService productService, CategoryService categoryService, ProductRepository productRepository) {
         this.storeService = storeService;
         this.customerRepository = customerRepository;
         this.productService = productService;
         this.categoryService = categoryService;
+        this.productRepository = productRepository;
     }
 
     @GetMapping("/ShowProdByStore/{id}")
@@ -69,5 +72,18 @@ public class ProductViewController {
         model.addAttribute("product", product);
         model.addAttribute("customer", session.getAttribute("customer"));
         return "BuyProductPage";
+    }
+
+    @GetMapping("/getAllProd")
+    public String showProds(HttpSession session, Model model, @RequestParam(name = "size", defaultValue = "6") int size, @RequestParam(name = "page", defaultValue = "0") int page){
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Product> products = productRepository.findAll(pageable);
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("hasPrev", page > 0);
+        model.addAttribute("hasNext", page < products.getTotalPages() - 1);
+        return "allProducts";
     }
 }
