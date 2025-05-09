@@ -39,8 +39,9 @@ public class CategoryViewController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Category> categories = catSvc.findAllCategories(pageable);
         System.out.println(categories);
+        Customer customer = (Customer) session.getAttribute("customer");
         model.addAttribute("categories", categories);
-        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("customer", customer);
         return "AllCategories"; // categories.html
     }
 }
