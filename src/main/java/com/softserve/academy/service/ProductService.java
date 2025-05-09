@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
     public final ProductRepository prodRepo;
@@ -69,4 +71,51 @@ public class ProductService {
         if (catRepo.findById(id).isEmpty()) {return null;}
         return prodRepo.findProductByCategory_Id(id, pageable);
     }
+
+    public void setDiscountById(Long id, double discount) {
+        if (discount < 0 || discount > 1) {
+            throw new IllegalArgumentException("Discount must be between 0 and 1.");
+        }
+
+        Product product = prodRepo.findById(id).orElse(null);
+
+        if (product != null) {
+            product.setDiscount(discount);
+            prodRepo.save(product);
+        }
+    }
+
+    public void setDescriptionById(Long id, String description) {
+        if (description.length() > 200) {
+            throw new IllegalArgumentException("Description cannot exceed 200 characters.");
+        }
+
+        Product product = prodRepo.findById(id).orElse(null);
+
+        if (product != null) {
+            product.setDescription(description);
+            prodRepo.save(product);
+        }
+    }
+
+    public void updateNullDiscounts() {
+        List<Product> products = prodRepo.findAll();
+        for (Product product : products) {
+            if (product.getDiscount() == null) {
+                product.setDiscount(0.0);
+                prodRepo.save(product);
+            }
+        }
+    }
+
+    public void updateNullDescriptions() {
+        List<Product> products = prodRepo.findAll();
+        for (Product product : products) {
+            if (product.getDescription() == null) {
+                product.setDescription("");
+                prodRepo.save(product);
+            }
+        }
+    }
+
 }

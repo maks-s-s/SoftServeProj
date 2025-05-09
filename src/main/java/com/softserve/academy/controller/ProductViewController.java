@@ -9,6 +9,7 @@ import com.softserve.academy.repository.CustomerRepository;
 import com.softserve.academy.service.CategoryService;
 import com.softserve.academy.service.ProductService;
 import com.softserve.academy.service.StoreService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,5 +59,15 @@ public class ProductViewController {
         model.addAttribute("prods", prods);
         model.addAttribute("catName", categoryService.getCategoryById(id).getName());
         return "ProdsByCategory";
+    }
+
+    @GetMapping("/buy/{prodId}")
+    public String buy(@PathVariable("prodId") Long id, Model model, HttpSession session) {
+        if(session.getAttribute("customer") == null) {return "redirect:/";}
+
+        Product product = productService.getProductById(id);
+        model.addAttribute("product", product);
+        model.addAttribute("customer", session.getAttribute("customer"));
+        return "BuyProductPage";
     }
 }

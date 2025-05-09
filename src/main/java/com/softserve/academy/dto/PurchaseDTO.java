@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +16,7 @@ public class PurchaseDTO {
     public Long customerId;
     public Long productId;
     public int quantity;
+    public LocalDateTime time;
 
     public boolean validate(){
         return customerId!=null&&productId!=null&&quantity>0;

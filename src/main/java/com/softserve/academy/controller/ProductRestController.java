@@ -72,4 +72,25 @@ public class ProductRestController {
         return ResponseEntity.ok(products.map(ProductMapper::toProductDTO));
     }
 
+    @PutMapping("/setDiscount/{prodId}")
+    public void setDiscount(@PathVariable("prodId") Long id, @RequestParam double discount) {
+        prodSrv.setDiscountById(id, discount);
+    }
+
+    @PutMapping("/setDescription/{prodId}")
+    public void setDescription(@PathVariable("prodId") Long id, @RequestParam String description) {
+        prodSrv.setDescriptionById(id, description);
+    }
+
+        @PutMapping("/updateNullDiscounts")
+    public ResponseEntity<String> updateAllNullDiscounts() {
+        prodSrv.updateNullDiscounts();
+        return ResponseEntity.ok("All products with null discount have been updated to 0.");
+    }
+
+    @PutMapping("/updateNullDescriptions")
+    public ResponseEntity<String> updateAllNullDescriptions() {
+        prodSrv.updateNullDescriptions();
+        return ResponseEntity.ok("All products with null description have been updated to an empty string.");
+    }
 }

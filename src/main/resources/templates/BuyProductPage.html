@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Purchase</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #4b5563;
+            --light: #f9fafb;
+            --dark: #111827;
+            --border: #e5e7eb;
+            --text-light: #f8f9fa;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .product-details {
+            margin-top: 70px;
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .product-image {
+            width: 400px;
+            height: 400px;
+            background-color: #e5e7eb;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-title {
+            font-weight: 600;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .product-old-price {
+            text-decoration: line-through;
+            color: var(--secondary);
+            font-size: 1rem;
+            margin-left: 5px;
+        }
+
+        .product-description {
+            margin-bottom: 16px;
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+
+        .purchase-buttons {
+            margin-top: 100px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .purchase-btn {
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-left: 40px;
+        }
+
+        .purchase-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .purchase-btn:active {
+            background: #1e40af;
+        }
+
+        .menu {
+            width: 300px;
+            color: white;
+            position: fixed;
+            top: 0;
+            right: -300px;
+            height: 100%;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            background-color: #333;
+        }
+
+        .menu.open {
+            right: 0;
+            background-color: #333;
+        }
+
+        .menu-header {
+            padding: 20px;
+            background-color: #444;
+            font-size: 1.5em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-items {
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-items button {
+            padding: 15px;
+            width: 100%;
+            background-color: #555;
+            border: none;
+            border-bottom: 1px solid #666;
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .menu-items button:hover {
+            background-color: #666;
+        }
+        .user-info {
+            color: #ccc;
+            font-size: 1.2em;
+            padding-top: 20px;
+            text-align: right;
+        }
+
+        .close-menu {
+            font-size: 1.5em;
+            color: #444;
+            cursor: pointer;
+        }
+
+        .menu-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .user-info .profile-icon {
+            cursor: pointer;
+            font-size: 1.8em;
+        }
+        .success-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        input[type="number"] {
+            width: 80px;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-container">
+    <div class="user-info">
+        <button class="profile-icon" onclick="toggleMenu()">☰</button>
+    </div>
+</div>
+
+<div id="menu" class="menu">
+    <div class="menu-header">
+        <p>Menu</p>
+        <button class="close-menu" onclick="toggleMenu()">×</button>
+    </div>
+    <div id="info" class="info">
+        <p th:text="'Name: ' + ${customer.name}"></p>
+        <p th:text="'Email: ' + ${customer.email}"></p>
+        <p th:text="'Phone Number: ' + ${customer.phoneNumber}"></p>
+        <p th:text="'Access: ' + ${customer.role}"></p>
+    </div>
+
+    <div class="menu-items">
+        <form action="/purchaseHistory">
+            <button type="submit">Purchase History</button>
+        </form>
+        <form action="customer/logout">
+            <button type="submit">Log Out</button>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>Product Purchase</h1>
+    </div>
+
+    <div class="product-details">
+        <div class="product-info">
+            <h3 class="product-title" th:text="${product.name}"></h3>
+            <div>
+                <span class="product-price" th:text="@{'₴'+ ${product.price - (product.price * product.discount)}}"></span>
+                <span class="product-old-price" th:text="@{'₴'+${product.price}}"></span>
+            </div>
+
+            <p class="product-description" th:text="${product.description}"></p>
+
+            <div class="purchase-buttons">
+                <form action="/addPurchase" method="post">
+                    <input type="hidden" name="prodId" th:value="${product.id}">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" step="1">
+                    <button class="purchase-btn">Buy Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="successNotification" class="success-notification">
+    <p>Successful</p>
+</div>
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('open');
+    }
+
+    function showSuccessNotification(event) {
+        event.preventDefault();
+
+        const notification = document.getElementById('successNotification');
+        notification.style.display = 'block';
+
+        setTimeout(function() {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+</script>
+</body>
+</html>
