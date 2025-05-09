@@ -21,7 +21,6 @@ public class ProductService {
         this.catRepo = catRepo;
     }
 
-    @Transactional
     public boolean addProduct(Product product, Long categoryId){
         if (catRepo.findById(categoryId).isEmpty()) {
             return false;

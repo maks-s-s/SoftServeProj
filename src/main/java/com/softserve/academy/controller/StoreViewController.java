@@ -4,6 +4,7 @@ package com.softserve.academy.controller;
 import com.softserve.academy.dto.StoreDTO;
 
 import com.softserve.academy.model.Customer;
+import com.softserve.academy.model.Store;
 import com.softserve.academy.repository.CustomerRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
@@ -34,7 +35,7 @@ public class StoreViewController {
                                @RequestParam(name = "size", defaultValue = "3") int size,
                                @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<StoreDTO> store = storeSrv.getAllStores(pageable);
+        Page<Store> store = storeSrv.getAllStores(pageable);
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("store", store);
         model.addAttribute("currentPage", page);

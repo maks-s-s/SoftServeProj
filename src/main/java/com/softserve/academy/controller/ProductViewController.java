@@ -4,6 +4,7 @@ package com.softserve.academy.controller;
 import com.softserve.academy.dto.ProductDTO;
 import com.softserve.academy.model.Customer;
 import com.softserve.academy.model.Product;
+import com.softserve.academy.model.Role;
 import com.softserve.academy.model.Store;
 import com.softserve.academy.repository.CustomerRepository;
 import com.softserve.academy.repository.ProductRepository;
@@ -11,15 +12,14 @@ import com.softserve.academy.service.CategoryService;
 import com.softserve.academy.service.ProductService;
 import com.softserve.academy.service.StoreService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ProductViewController {
@@ -84,5 +84,36 @@ public class ProductViewController {
         model.addAttribute("hasPrev", page > 0);
         model.addAttribute("hasNext", page < products.getTotalPages() - 1);
         return "allProducts";
+    }
+
+    @GetMapping("/product/addProd")
+    public String showAddProd(Model model, HttpSession session) {
+        model.addAttribute("ProductDTO", new ProductDTO());
+        Customer customer = (Customer) session.getAttribute("customer");
+        return "AddProd";
+    }
+
+    @PostMapping("/product/addProd")
+    public String processAddProd(Model model,
+                                 HttpSession session,
+                                 @Valid @ModelAttribute("ProductDTO") ProductDTO productDTO) {
+        Customer customer = (Customer) session.getAttribute("customer");
+        boolean errsExist = false;
+        if (customer.getRole() != Role.ADMIN){
+            model.addAttribute("authError", "You don't have access to this page.");
+            return "AddProd";
+        }
+        if (categoryService.getCategoryById(productDTO.getCategoryId())==null) {
+            model.addAttribute("catIDError", "This category doesn't exist.");
+            errsExist=true;
+        }
+        if (errsExist){ return "AddProd";}
+        productService.addProduct(  Product.builder()
+                .name(productDTO.getName())
+                .price(productDTO.getPrice())
+                .description(productDTO.getDescription())
+                .discount(productDTO.getDiscount()).build(), productDTO.getCategoryId());
+        model.addAttribute("prodAdded", "Product successfully added.");
+        return "AddProd";
     }
 }

@@ -26,13 +26,13 @@ public class ProductRestController {
 
 
     @PostMapping()
-    public ResponseEntity<Void> addProduct(@RequestBody ProductDTO product){
-        if (product.validate()){
-            if(prodSrv.addProduct(
+    public ResponseEntity<Void> addProduct(@RequestBody ProductDTO product) {
+        if (product.validate()) {
+            if (prodSrv.addProduct(
                     Product.builder()
                             .name(product.getName())
                             .price(product.getPrice())
-                            .build(), product.categoryId)){
+                            .build(), product.categoryId)) {
                 return ResponseEntity.ok().build();
             }
         }
@@ -40,22 +40,38 @@ public class ProductRestController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO product){
+    public ResponseEntity<Void> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO product) {
         prodSrv.updateProduct(product, prodSrv.getProductById(id));
         return ResponseEntity.accepted().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id){
-        if(prodSrv.deleteProduct(id)) return ResponseEntity.ok().build();
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
+        if (prodSrv.deleteProduct(id)) return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable("id") Long id){
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable("id") Long id) {
         ProductDTO prodDetails = prodSrv.getProductDTO(id);
-        if (prodDetails==null) return ResponseEntity.notFound().build();
+        if (prodDetails == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(prodDetails);
+    }
+
+    @GetMapping()
+    public ResponseEntity<Page<ProductDTO>> getAllProducts(
+            @RequestParam(name = "size", defaultValue = "3") int size,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "mostExpensiveFirst", defaultValue = "true") boolean mostExpensiveFirst) {
+        Pageable pageable;
+        if (mostExpensiveFirst) {
+            pageable = PageRequest.of(page, size, Sort.by("price").descending());
+        } else {
+            pageable = PageRequest.of(page, size, Sort.by("price").ascending());
+        }
+        ResponseEntity<Page<ProductDTO>> responseEntity = getProductsByCategory(0L, size, page, mostExpensiveFirst);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {return responseEntity;}
+        return ResponseEntity.notFound().build();
     }
 
 
