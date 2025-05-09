@@ -35,6 +35,11 @@ public class ProductService {
         return true;
     }
 
+
+    public List<Product> getAllProductsListType() {
+        return prodRepo.findAll();
+    }
+
     @Transactional
     public void updateProduct(ProductDTO prodDetails, Product product){
         if (prodDetails.categoryId==null) {prodDetails.categoryId=product.getCategory().getId();}

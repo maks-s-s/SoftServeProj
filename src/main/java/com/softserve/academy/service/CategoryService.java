@@ -27,7 +27,9 @@ public class CategoryService {
     }
     public Page<Category> findAllCategories(Pageable pageable) {
         return categoryRepository.findAll(pageable);
-
+    }
+    public List<Category> findAllCategoriesListType() {
+        return categoryRepository.findAllByOrderByNameAsc();
     }
     public void addCategory(Category category) {
         categoryRepository.save(category);

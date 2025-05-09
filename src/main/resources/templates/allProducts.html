@@ -14,6 +14,26 @@
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
+        .back-btn {
+            position: absolute;
+            top: 1rem;       /* distance from top edge */
+            left: 1rem;      /* distance from left edge */
+            padding: 0.5em 1em;
+            background-color: #3f37c9;   /* secondary color */
+            color: #f8f9fa;             /* light text */
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: #4361ee;   /* primary color on hover */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -257,6 +277,10 @@
         </div>
     </div>
     <div class="header">
+        <a onclick="history.back()"
+           class="back-btn">
+            ← Back
+        </a>
         <h1>Product catalog</h1>
         <p> All products</p>
     </div>
@@ -275,10 +299,10 @@
     </div>
     <div class= "page-buttons">
         <a  th:if="${hasPrev}"
-            th:href="@{/ShowProdByStore/{id}(id=${id},page=${currentPage - 1}, size=${products.size},customerId=${customer.id})}" class="page-btn prev">←</a>
+            th:href="@{/getAllProd{id}(id=${id},page=${currentPage - 1}, size=${products.size})}" class="page-btn prev">←</a>
         <span class="page-info" th:text=" ${currentPage + 1 + '/' + totalPages}"> </span>
         <a th:if="${hasNext}"
-           th:href="@{/ShowProdByStore/{id}(id=${id},page=${currentPage + 1}, size=${products.size},customerId=${customer.id})}" class="page-btn next" >→</a>
+           th:href="@{/getAllProd{id}(id=${id},page=${currentPage + 1}, size=${products.size})}" class="page-btn next" >→</a>
     </div>
 </div>
 <script>

@@ -88,8 +88,11 @@ public class ProductViewController {
 
     @GetMapping("/product/addProd")
     public String showAddProd(Model model, HttpSession session) {
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("categories", categoryService.findAllCategoriesListType());
         model.addAttribute("ProductDTO", new ProductDTO());
         Customer customer = (Customer) session.getAttribute("customer");
+        model.addAttribute("customer", session.getAttribute("customer"));
         return "AddProd";
     }
 
@@ -113,6 +116,8 @@ public class ProductViewController {
                 .price(productDTO.getPrice())
                 .description(productDTO.getDescription())
                 .discount(productDTO.getDiscount()).build(), productDTO.getCategoryId());
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("categories", categoryService.findAllCategoriesListType());
         model.addAttribute("prodAdded", "Product successfully added.");
         return "AddProd";
     }

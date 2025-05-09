@@ -75,6 +75,12 @@ public class StoreService {
         return storeRepo.findAll(pageable);
     }
 
+    public List<Store> getAllStoresListType() {
+        return storeRepo.findAll();
+    }
+
+
+
 
     public Page<Product> getProductsByStore(Long id, Pageable pageable) {
         return prodRepo.findByStoreId(id, pageable);

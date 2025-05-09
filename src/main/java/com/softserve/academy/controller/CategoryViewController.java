@@ -49,6 +49,7 @@ public class CategoryViewController {
     public String showProductToCategory(Model model, HttpSession session) {
         model.addAttribute("ProdToCatForm", new ProdToCatForm());
         Customer customer = (Customer) session.getAttribute("customer");
+        model.addAttribute("customer", session.getAttribute("customer"));
         return "AddProdToCat";
     }
 
@@ -56,6 +57,7 @@ public class CategoryViewController {
     public String processProductToCategory(Model model, HttpSession session,
                                            @Valid @ModelAttribute("ProdToCatForm") ProdToCatForm prodToCatForm) {
         Customer customer = (Customer) session.getAttribute("customer");
+        model.addAttribute("customer", session.getAttribute("customer"));
         boolean errsExist = false;
         if (customer.getRole() != Role.ADMIN){
             model.addAttribute("authError", "You don't have access to this page.");

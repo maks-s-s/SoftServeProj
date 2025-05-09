@@ -41,9 +41,13 @@
     <title>Add Product</title>
 </head>
 <body class="flex-center">
+<a onclick="history.back()"
+   class="btn btn-secondary position-absolute top-0 start-0 m-3">
+    ← Back
+</a>
 <div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%;">
     <h1 class="h4 mb-3 text-center">Add Product</h1>
-    <form th:action="@{/product/addProd}" th:object="${ProductDTO}" method="post" novalidate>
+    <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" th:action="@{/product/addProd}" th:object="${ProductDTO}" method="post" novalidate>
         <div class="mb-3">
             <input th:field="*{name}" class="form-control" type="text" placeholder="Product Name" required>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
@@ -53,8 +57,18 @@
             <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
         </div>
         <div class="mb-3">
-            <input pattern="\\d*" th:field="*{categoryId}" class="form-control" type="text" placeholder="Product Category ID" required>
-            <div class="invalid-feedback" th:if="${catIDError!=null}" th:text="${catIDError}"></div>
+            <select th:field="*{categoryId}" class="form-select" required>
+                <option value="" disabled th:if="${#fields.hasErrors('categoryId') == false}" selected>
+                    — Select a category —
+                </option>
+                <option th:each="cat : ${categories}"
+                        th:value="${cat.id}"
+                        th:text="${cat.name}">
+                </option>
+            </select>
+            <div class="invalid-feedback"
+                 th:if="${#fields.hasErrors('categoryId')}"
+                 th:errors="*{categoryId}">Please choose a category.</div>
         </div>
         <div class="mb-3">
             <textarea th:field="*{description}" class="form-control" rows="3" placeholder="Product Description" required></textarea>
@@ -67,6 +81,7 @@
         <button class="btn btn-primary w-100" type="submit">Add</button>
         <div class="mt-2 text-success" th:if="${prodAdded}" th:text="${prodAdded}"></div>
     </form>
+    <h3 th:unless="${customer.role==T(com.softserve.academy.model.Role).ADMIN}">You are not allowed to do this</h3>
 </div>
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
