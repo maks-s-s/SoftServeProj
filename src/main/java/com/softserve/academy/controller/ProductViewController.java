@@ -38,7 +38,11 @@ public class ProductViewController {
     }
 
     @GetMapping("/ShowProdByStore/{id}")
-    public String ShowProdByStore(HttpSession session,@PathVariable("id") Long id, Model model, @RequestParam(name = "size", defaultValue = "3") int size, @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String ShowProdByStore(@PathVariable("id") Long id,
+                                  @RequestParam(name = "size", defaultValue = "3") int size,
+                                  @RequestParam(name = "page", defaultValue = "0") int page,
+                                  Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
         Pageable pageable = PageRequest.of(page,size);
         Store store = storeService.getStoreById(id);
         Page<Product> products = storeService.getProductsByStore(id,pageable);
@@ -55,7 +59,8 @@ public class ProductViewController {
 
     @GetMapping("/byCategory/{catId}")
     public String showProdsByCategory(@PathVariable("catId") Long id,
-                                      Model model){
+                                      Model model, HttpSession session){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
         Pageable pageable = PageRequest.of(0, 5);
         Page<Product> prods = productService.getProductsByCategory(id, pageable);
         model.addAttribute("prods", prods);
@@ -75,8 +80,9 @@ public class ProductViewController {
 
     @GetMapping("/getAllProd")
     public String showProds(HttpSession session, Model model,
-                            @RequestParam(name = "size", defaultValue = "6") int size,
-                            @RequestParam(name = "page", defaultValue = "0") int page){
+                            @RequestParam(name = "size", defaultValue = "8") int size,
+                            @RequestParam(name = "page", defaultValue = "0") int page) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
         Pageable pageable = PageRequest.of(page,size);
         Page<Product> products = productRepository.findAll(pageable);
         model.addAttribute("customer", session.getAttribute("customer"));

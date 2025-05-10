@@ -225,9 +225,39 @@
             top: 20px;
             right: 20px;
         }
+        .link {
+            display: block;
+            padding: 15px 20px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .link:hover {
+            background-color: #e0e0e0;
+        }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
+
+<a href="/buy" class="back-to-home">Back to Buy Page</a>
+
 <div id="menu" class="menu">
     <div class="menu-header">
         <p>Menu</p>
@@ -262,23 +292,25 @@
     </div>
 
     <div class="products-grid">
-        <div class="product-card" th:each="products : ${products}">
-            <div class="product-info">
-                <span class="product-badge">Sale 25%</span>
-                <h3 class="product-title" th:text="${products.name}"></h3>
-                <div>
-                    <span class="product-price" th:text="'$' + ${products.price}"></span>
-                    <span class="product-old-price" th:text="'$' + ${products.price * 1.25}"></span>
+        <div class="product-card" th:each="product : ${products}">
+            <a th:href="@{'/buy/' + ${product.id}}" class="link">
+                <div class="product-info">
+                    <span class="product-badge" th:if="${product.discount != 0}" th:text="'Sale ' + ${#numbers.formatDecimal(product.discount * 100, 0, 0)} + '%'"></span>
+                    <h3 class="product-title" th:text="${product.name}"></h3>
+                    <div>
+                        <span class="product-price" th:text="'₴' + ${#numbers.formatDecimal(product.price * (1 - product.discount), 2, 2)}"></span>
+                        <span class="product-old-price" th:if="${product.discount != 0}" th:text="'₴' + ${product.price}"></span>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class= "page-buttons">
         <a  th:if="${hasPrev}"
-            th:href="@{/ShowProdByStore/{id}(id=${id},page=${currentPage - 1}, size=${products.size},customerId=${customer.id})}" class="page-btn prev">←</a>
+            th:href="@{'/getAllProd?page=' + ${currentPage - 1}}" class="page-btn prev">←</a>
         <span class="page-info" th:text=" ${currentPage + 1 + '/' + totalPages}"> </span>
         <a th:if="${hasNext}"
-           th:href="@{/ShowProdByStore/{id}(id=${id},page=${currentPage + 1}, size=${products.size},customerId=${customer.id})}" class="page-btn next" >→</a>
+           th:href="@{'/getAllProd?page=' + ${currentPage + 1}}" class="page-btn prev">→</a>
     </div>
 </div>
 <script>

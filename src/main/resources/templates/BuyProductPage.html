@@ -211,9 +211,25 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
+
+<a href="/buy" class="back-to-home">Back to Buy Page</a>
 
 <div class="menu-container">
     <div class="user-info">
@@ -251,8 +267,8 @@
         <div class="product-info">
             <h3 class="product-title" th:text="${product.name}"></h3>
             <div>
-                <span class="product-price" th:text="@{'₴'+ ${product.price - (product.price * product.discount)}}"></span>
-                <span class="product-old-price" th:text="@{'₴'+${product.price}}"></span>
+                <span class="product-price" th:text="'₴' + ${#numbers.formatDecimal(product.price * (1 - product.discount), 2, 2)}"></span>
+                <span class="product-old-price" th:if="${product.discount != 0}" th:text="'₴' + ${product.price}"></span>
             </div>
 
             <p class="product-description" th:text="${product.description}"></p>

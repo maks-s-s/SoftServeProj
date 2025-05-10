@@ -20,6 +20,7 @@ public class HomeViewController {
     }
     @GetMapping("/buy")
     public String buyPage(Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
         model.addAttribute("customer", session.getAttribute("customer"));
         return "Buy";
     }

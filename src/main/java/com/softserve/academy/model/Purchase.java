@@ -59,6 +59,12 @@ public class Purchase {
     private LocalDateTime purchaseDate;
 
     public void setTotalPrice(){
-        this.totalPrice=product.getPrice().multiply(BigDecimal.valueOf(quantity));
+        if (this.product.getDiscount() == 0) {
+            this.totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+        }
+        else {
+            this.totalPrice = product.getPrice().multiply(BigDecimal.valueOf(1 - this.product.getDiscount()))
+                    .multiply(BigDecimal.valueOf(quantity));
+        }
     }
 }

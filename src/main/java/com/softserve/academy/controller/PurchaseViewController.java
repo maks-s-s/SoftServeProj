@@ -20,7 +20,11 @@ public class PurchaseViewController {
     private PurchaseService purchaseService;
 
     @PostMapping("/addPurchase")
-    public String addPurchase(@RequestParam("prodId") Long prodId, @RequestParam("quantity") int quantity, Model model, HttpSession session) {
+    public String addPurchase(@RequestParam("prodId") Long prodId,
+                              @RequestParam("quantity") int quantity,
+                              Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         PurchaseDTO purchase = new PurchaseDTO();
         Customer customer = (Customer) session.getAttribute("customer");
         purchase.setCustomerId(customer.getId());
