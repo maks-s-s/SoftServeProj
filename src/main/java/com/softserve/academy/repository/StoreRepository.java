@@ -22,4 +22,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     // Find all stores that contain a specific product
     Page<Store> findByProductsContaining(Product product, Pageable pageable);
+
 }

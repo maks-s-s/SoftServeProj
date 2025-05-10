@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазины с выбранным товаром</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .store {
+            padding: 15px;
+            border-bottom: 1px solid #ccc;
+        }
+        .store:last-child {
+            border-bottom: none;
+        }
+        .store-name {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .store-address {
+            color: #555;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-btn:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 th:text="'Stores where you can find: ' + ${productName}"></h2>
+
+    <div th:if="${#lists.isEmpty(stores)}">
+        <p>Stores no found</p>
+    </div>
+
+    <div th:each="store : ${stores}" class="store">
+        <div class="store-name" th:text="${store.name}"></div>
+        <div class="store-address" th:text="'Адрес: ' + ${store.location}"></div>
+    </div>
+
+    <a href="/goToSearchStore" class="back-btn">← Back to search</a>
+</div>
+</body>
+</html>

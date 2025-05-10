@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор товара</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f9fafb;
+            --text-color: #111827;
+            --border-color: #d1d5db;
+            --hover-color: #1d4ed8;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--text-color);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #fff;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--hover-color);
+        }
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/buy" class="back-to-home">Back to Buy Page</a>
+
+<div class="form-container">
+    <h1>Find stores</h1>
+    <form action="/findStoresByProduct" method="get">
+        <label for="productName">Product:</label>
+
+        <select name="productName" id="productName" required>
+            <option value="" disabled selected>-- Choose product --</option>
+            <option th:each="product : ${products}"
+                    th:value="${product.name}"
+                    th:text="${product.name}">
+            </option>
+        </select>
+
+        <button type="submit">Search</button>
+    </form>
+</div>
+</body>
+</html>

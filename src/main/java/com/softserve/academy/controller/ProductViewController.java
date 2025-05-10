@@ -7,6 +7,7 @@ import com.softserve.academy.model.Product;
 import com.softserve.academy.model.Store;
 import com.softserve.academy.repository.CustomerRepository;
 import com.softserve.academy.repository.ProductRepository;
+import com.softserve.academy.repository.StoreRepository;
 import com.softserve.academy.service.CategoryService;
 import com.softserve.academy.service.ProductService;
 import com.softserve.academy.service.StoreService;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class ProductViewController {
     StoreService storeService;
@@ -28,13 +31,15 @@ public class ProductViewController {
     ProductService productService;
     CategoryService categoryService;
     ProductRepository productRepository;
+    StoreRepository storeRepository;
     @Autowired
-    ProductViewController(StoreService storeService, CustomerRepository customerRepository, ProductService productService, CategoryService categoryService, ProductRepository productRepository) {
+    ProductViewController(StoreService storeService, CustomerRepository customerRepository, ProductService productService, CategoryService categoryService, ProductRepository productRepository,StoreRepository storeRepository) {
         this.storeService = storeService;
         this.customerRepository = customerRepository;
         this.productService = productService;
         this.categoryService = categoryService;
         this.productRepository = productRepository;
+        this.storeRepository = storeRepository;
     }
 
     @GetMapping("/ShowProdByStore/{id}")
@@ -109,5 +114,15 @@ public class ProductViewController {
         model.addAttribute("sortUp", sortUp);
         model.addAttribute("sortDown", sortDown);
         return "allProducts";
+    }
+    @GetMapping("/findStoresByProduct")
+    public String findStores(@RequestParam("productName") String productName, Model model, @RequestParam(name = "size", defaultValue = "8") int size,
+                             @RequestParam(name = "page", defaultValue = "0") int page) {
+        Product product = productRepository.findByName(productName);
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Store> stores = storeRepository.findByProductsContaining(product,pageable); // или другой метод
+        model.addAttribute("stores", stores);
+        model.addAttribute("productName", productName);
+        return "storesByProduct";
     }
 }
