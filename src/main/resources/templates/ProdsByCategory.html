@@ -84,9 +84,26 @@
         .back-button:hover {
             background-color: #0056b3;
         }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
+
+<a href="/category/goToCategories" class="back-to-home">Back to Category Page</a>
+
 <div class="container">
     <h1 th:text="${catName}"></h1>
 
