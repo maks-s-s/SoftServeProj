@@ -114,8 +114,13 @@ public class StoreService {
         productsSET.remove(product);
         return true;
     }
-    public Page<Product> getProductsByStore(Long id, Pageable pageable) {
-        return prodRepo.findByStoreId(id, pageable);
+    public Page<Product> getProductsByStore(Long id, Pageable pageable,boolean sortUp,boolean sortDown) {
+        if (sortUp) {
+            return prodRepo.findByStoreIdOrderByPriceASC(id,pageable);
+        } else if (sortDown) {
+            return prodRepo.findByStoreIdOrderByPriceDesc(id,pageable);
+        }
+        return prodRepo.findByStoreId(id,pageable);
     }
 
 }

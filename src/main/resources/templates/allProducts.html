@@ -252,6 +252,55 @@
             font-size: 14px;
             text-decoration: none;
         }
+        .sort-options {
+            margin: 0 auto 20px auto;
+            position: relative;
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sort-options button {
+            padding: 15px 25px;
+            background-color: #555;
+            color: white;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .sort-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff;
+            border: 1px solid #ccc;
+            display: none;
+            flex-direction: column;
+            border-radius: 5px;
+            width: 150px;
+            z-index: 100;
+        }
+
+        .sort-dropdown button {
+            padding: 10px;
+            background-color: #fff;
+            color: #333;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+        }
+
+        .sort-dropdown button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .sort-options:hover .sort-dropdown {
+            display: flex;
+        }
     </style>
 </head>
 <body>
@@ -280,7 +329,7 @@
         </form>
     </div>
 </div>
-<div class="container">
+
     <div class = "menu-container">
         <div class="user-info">
             <button class="profile-icon" onclick="toggleMenu()">☰</button>
@@ -290,7 +339,14 @@
         <h1>Product catalog</h1>
         <p> All products</p>
     </div>
-
+    <div class="sort-options">
+        <button>Sort by</button>
+        <div class="sort-dropdown">
+            <button onclick="sortDown()">Sort Down</button>
+            <button onclick="sortUp()">Sort Up</button>
+        </div>
+    </div>
+<div class="container">
     <div class="products-grid">
         <div class="product-card" th:each="product : ${products}">
             <a th:href="@{'/buy/' + ${product.id}}" class="link">
@@ -307,16 +363,37 @@
     </div>
     <div class= "page-buttons">
         <a  th:if="${hasPrev}"
-            th:href="@{'/getAllProd?page=' + ${currentPage - 1}}" class="page-btn prev">←</a>
+            th:href="@{/getAllProd(page=${currentPage - 1}, sortUp=${sortUp}, sortDown=${sortDown})}" class="page-btn prev">←</a>
         <span class="page-info" th:text=" ${currentPage + 1 + '/' + totalPages}"> </span>
         <a th:if="${hasNext}"
-           th:href="@{'/getAllProd?page=' + ${currentPage + 1}}" class="page-btn prev">→</a>
+           th:href="@{/getAllProd(page=${currentPage + 1}, sortUp=${sortUp}, sortDown=${sortDown})}" class="page-btn prev">→</a>
     </div>
 </div>
 <script>
     function toggleMenu() {
         const menu = document.getElementById('menu');
         menu.classList.toggle('open');
+    }
+    function sortDown() {
+        console.log("Sorting by date");
+        const url = new URL(window.location);
+        url.searchParams.set('sortDown', 'true');
+        url.searchParams.set('sortUp', 'false');
+        url.searchParams.set('page', '0');
+        const newUrl = url.toString();
+        window.history.replaceState({}, '', url);
+        window.location.reload();
+    }
+
+    function sortUp() {
+        console.log("Sorting by total price");
+        const url = new URL(window.location);
+        url.searchParams.set('sortDown', 'false');
+        url.searchParams.set('sortUp', 'true');
+        url.searchParams.set('page', '0');
+        const newUrl = url.toString();
+        window.history.replaceState({}, '', url);
+        window.location.reload();
     }
 </script>
 </body>
