@@ -43,6 +43,7 @@ public class ProductService {
     @Transactional
     public void updateProduct(ProductDTO prodDetails, Product product){
         if (prodDetails.categoryId==null) {prodDetails.categoryId=product.getCategory().getId();}
+        product.setDescription(prodDetails.getDescription()!=null? prodDetails.getDescription() : product.getDescription() );
         product.setName(prodDetails.getName()!=null? prodDetails.getName() : product.getName());
         product.setPrice(prodDetails.getPrice()!=null? prodDetails.getPrice():product.getPrice());
         product.setCategory(product.getCategory());

@@ -46,18 +46,38 @@
     ← Back
 </a>
 <div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%;">
-    <h1 class="h4 mb-3 text-center">Add Product</h1>
-    <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" th:action="@{/product/addProd}" th:object="${ProductDTO}" method="post" novalidate>
+    <h1 class="h4 mb-3 text-center" th:text="${mode}"></h1>
+    <form
+            th:with="alterMode=${mode == 'Alter Product'},
+            isRequired=${alterMode ? null : 'required'},
+            actionUrl=${ alterMode ? '/product/alterProd' : '/product/addProd' }"
+            th:action="@{${actionUrl}}"
+            th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}"
+            th:object="${ProductDTO}" method="post">
+        <div th:if="${mode=='Alter Product'}" class="mb-3">
+            <label class="form-label">Product</label>
+            <select th:field="*{id}" class="form-select" required>
+                <option value="" disabled
+                        th:if="${#fields.hasErrors('id') == false}"
+                        selected>— Select a product —</option>
+                <option th:each="prod : ${prods}"
+                        th:value="${prod.id}"
+                        th:text="${prod.name}">
+                </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('id')}"
+                 th:errors="*{id}"></div>
+        </div>
         <div class="mb-3">
-            <input th:field="*{name}" class="form-control" type="text" placeholder="Product Name" required>
+            <input th:field="*{name}" class="form-control" type="text" placeholder="Product Name" th:attrappend="required=${isRequired}">
             <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         </div>
         <div class="mb-3">
-            <input pattern="^\d+(\.\d{1,2})?$" th:field="*{price}" class="form-control" type="text" placeholder="Product Price" required>
+            <input pattern="^\d+(\.\d{1,2})?$" th:field="*{price}" class="form-control" type="text" placeholder="Product Price" th:attrappend="required=${isRequired}">
             <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
         </div>
         <div class="mb-3">
-            <select th:field="*{categoryId}" class="form-select" required>
+            <select th:field="*{categoryId}" class="form-select" th:attrappend="required=${isRequired}">
                 <option value="" disabled th:if="${#fields.hasErrors('categoryId') == false}" selected>
                     — Select a category —
                 </option>
@@ -71,15 +91,16 @@
                  th:errors="*{categoryId}">Please choose a category.</div>
         </div>
         <div class="mb-3">
-            <textarea th:field="*{description}" class="form-control" rows="3" placeholder="Product Description" required></textarea>
+            <textarea th:field="*{description}" class="form-control" rows="3" placeholder="Product Description" th:attrappend="required=${isRequired}"></textarea>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
         </div>
         <div class="mb-3">
-            <input pattern="^\d+(\.\d{1,2})?$" th:field="*{discount}" class="form-control" type="text" placeholder="Product Discount" required>
+            <input pattern="^\d+(\.\d{1,2})?$" th:field="*{discount}" class="form-control" type="text" placeholder="Product Discount" th:attrappend="required=${isRequired}">
             <div class="invalid-feedback" th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"></div>
         </div>
         <button class="btn btn-primary w-100" type="submit">Add</button>
         <div class="mt-2 text-success" th:if="${prodAdded}" th:text="${prodAdded}"></div>
+        <div class="mt-2 text-success" th:if="${prodEdited}" th:text="${prodEdited}"></div>
     </form>
     <h3 th:unless="${customer.role==T(com.softserve.academy.model.Role).ADMIN}">You are not allowed to do this</h3>
 </div>

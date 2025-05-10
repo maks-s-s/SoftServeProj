@@ -89,6 +89,7 @@ public class ProductViewController {
     @GetMapping("/product/addProd")
     public String showAddProd(Model model, HttpSession session) {
         model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("mode", "Add Product");
         model.addAttribute("categories", categoryService.findAllCategoriesListType());
         model.addAttribute("ProductDTO", new ProductDTO());
         Customer customer = (Customer) session.getAttribute("customer");
@@ -106,16 +107,13 @@ public class ProductViewController {
             model.addAttribute("authError", "You don't have access to this page.");
             return "AddProd";
         }
-        if (categoryService.getCategoryById(productDTO.getCategoryId())==null) {
-            model.addAttribute("catIDError", "This category doesn't exist.");
-            errsExist=true;
-        }
-        if (errsExist){ return "AddProd";}
         productService.addProduct(  Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
                 .description(productDTO.getDescription())
                 .discount(productDTO.getDiscount()).build(), productDTO.getCategoryId());
+        model.addAttribute("mode", "Add Product");
+        model.addAttribute("ProductDTO", new ProductDTO());
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("categories", categoryService.findAllCategoriesListType());
         model.addAttribute("prodAdded", "Product successfully added.");
@@ -151,5 +149,32 @@ public class ProductViewController {
         model.addAttribute("prodDeleted", "Product successfully deleted.");
         model.addAttribute("ProductDTO", new ProductDTO());
         return "delProd";
+    }
+
+    @GetMapping("/product/alterProd")
+    public String editProductPage(Model model, HttpSession session) {
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("prods", productService.getAllProductsListType());
+        model.addAttribute("ProductDTO", new ProductDTO());
+        model.addAttribute("categories", categoryService.findAllCategoriesListType());
+        model.addAttribute("mode", "Alter Product");
+        return "AddProd";
+    }
+
+    @PostMapping("/product/alterProd")
+    public String processEditProductPage(Model model, HttpSession session,
+                                         @Valid @ModelAttribute("ProductDTO") ProductDTO productDTO) {
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer.getRole() != Role.ADMIN){
+            model.addAttribute("authError", "You don't have access to this page.");
+        }
+        productService.updateProduct(productDTO, productService.getProductById(productDTO.getId()));
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("prods", productService.getAllProductsListType());
+        model.addAttribute("ProductDTO", new ProductDTO());
+        model.addAttribute("categories", categoryService.findAllCategoriesListType());
+        model.addAttribute("mode", "Alter Product");
+        model.addAttribute("prodEdited", "Product successfully edited.");
+        return "AddProd";
     }
 }
