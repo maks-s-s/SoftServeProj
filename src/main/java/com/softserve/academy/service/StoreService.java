@@ -85,4 +85,13 @@ public class StoreService {
     public Page<Product> getProductsByStore(Long id, Pageable pageable) {
         return prodRepo.findByStoreId(id, pageable);
     }
+
+    public boolean deleteStoreById(Long storeId){
+        Store store = storeRepo.findById(storeId).orElse(null);
+        if (store==null){return false;}
+        Set<Product> products = store.getProducts();
+        products.stream().forEach(product -> product.getStores().remove(store));
+        storeRepo.deleteById(storeId);
+        return true;
+    }
 }

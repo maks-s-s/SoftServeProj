@@ -121,4 +121,35 @@ public class ProductViewController {
         model.addAttribute("prodAdded", "Product successfully added.");
         return "AddProd";
     }
+
+    @GetMapping("/product/manageProducts")
+    public String manageProducts(Model model, HttpSession session){
+        model.addAttribute("customer", session.getAttribute("customer"));
+        return "ProdManage";
+    }
+
+    @GetMapping("/product/delProd")
+    public String deleteProductPage(Model model, HttpSession session) {
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("products", productService.getAllProductsListType());
+        model.addAttribute("ProductDTO", new ProductDTO());
+        return "delProd";
+    }
+
+    @PostMapping("/product/delProd")
+    public String deleteProductProcess(Model model, HttpSession session,
+                                     @Valid @ModelAttribute("ProductDTO") ProductDTO productDTO) {
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer.getRole() != Role.ADMIN){
+            model.addAttribute("authError", "You wish");
+            model.addAttribute("customer", session.getAttribute("customer"));
+            return "delProd";
+        }
+        productService.deleteProduct(productDTO.getId());
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("products", productService.getAllProductsListType());
+        model.addAttribute("prodDeleted", "Product successfully deleted.");
+        model.addAttribute("ProductDTO", new ProductDTO());
+        return "delProd";
+    }
 }

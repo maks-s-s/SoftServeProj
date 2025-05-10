@@ -223,14 +223,14 @@
         <form action="/StoreViewAll" method="get">
             <button type="submit">Stores</button>
         </form>
-        <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" action="/product/addProd">
-            <button type="submit">Add new product</button>
+        <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" action="/manageStores">
+            <button type="submit">Manage Stores</button>
         </form>
-        <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" action="/category/addProdToCat">
-            <button type="submit">Set/replace product's category</button>
+        <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" action="/product/manageProducts">
+            <button type="submit">Manage Products</button>
         </form>
-        <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" action="/pushProdToStore">
-            <button type="submit">Push a product to a store</button>
+        <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" action="/category/manageCategories">
+            <button type="submit">Manage Categories</button>
         </form>
 </div>
 </div>

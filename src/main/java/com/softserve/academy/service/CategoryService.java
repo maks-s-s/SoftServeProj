@@ -41,6 +41,8 @@ public class CategoryService {
 
     public boolean deleteCategory(Long id) {
         if (categoryRepository.findById(id).isEmpty()) return false;
+        Category category = categoryRepository.findById(id).get();
+        category.getProducts().forEach(product -> product.setCategory(null));
         categoryRepository.deleteById(id);
         return true;
     }

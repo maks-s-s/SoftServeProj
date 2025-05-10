@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Product Manage</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --danger-color: #d00000;
+            --text-light: #f8f9fa;
+            --bg-light: #f8f9fa;
+            --bg-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body {
+            background-color: var(--bg-light);
+            color: #212529;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .back-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5em 1em;
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+        .back-btn:hover {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header {
+            background: var(--bg-gradient);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding: 2rem 1rem;
+        }
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        .card-body {
+            display: flex;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%; /* full width */
+        }
+        .button-container button {
+            width: 100%; /* full width of container */
+            padding: 12px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            border: 2px solid transparent;
+            background-color: rgba(255,255,255,0.1);
+        }
+        .button-container .btn-primary { border-color: var(--primary-color); }
+        .button-container .btn-secondary { border-color: var(--secondary-color); }
+        .button-container .btn-danger { border-color: var(--danger-color); }
+        .button-container .btn-primary:hover {
+            background-color: #45a049;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .button-container .btn-secondary:hover {
+            background-color: #1e90ff;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .button-container .btn-danger:hover {
+            background-color: var(--danger-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <a onclick="history.back()" class="back-btn">← Back</a>
+    <h1>Managing Products</h1>
+</header>
+<div class="center-container">
+    <div class="card">
+        <div class="card-body">
+            <div th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" class="button-container">
+                <form action="/product/addProd" method="get">
+                    <button type="submit" class="btn-primary">Add Product</button>
+                </form>
+                <form action="/category/addProdToCat" method="get">
+                    <button type="submit" class="btn-primary">Set product's category</button>
+                </form>
+                <form action="/product/delProd" method="get">
+                    <button type="submit" class="btn-danger">Delete Product</button>
+                </form>
+            </div>
+            <h3 th:unless="${customer.role==T(com.softserve.academy.model.Role).ADMIN}">You wish</h3>
+        </div>
+    </div>
+</div>
+</body>
+</html>
