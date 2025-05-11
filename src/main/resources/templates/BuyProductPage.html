@@ -283,10 +283,21 @@
             </div>
         </div>
     </div>
-</div>
-
-<div id="successNotification" class="success-notification">
-    <p>Successful</p>
+    <div id="purchaseModal" class="modal" style="display: none;">
+        <div class="modal-content" style="
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        text-align: center;
+        max-width: 400px;
+        margin: 100px auto;
+    ">
+            <h2 style="color: green;">Success!</h2>
+            <p>Thank you for you order.</p>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -295,16 +306,21 @@
         menu.classList.toggle('open');
     }
 
-    function showSuccessNotification(event) {
-        event.preventDefault();
-
-        const notification = document.getElementById('successNotification');
-        notification.style.display = 'block';
-
-        setTimeout(function() {
-            notification.style.display = 'none';
-        }, 3000);
+    function showModal() {
+        document.getElementById("purchaseModal").style.display = "block";
     }
+
+    function closeModal() {
+        document.getElementById("purchaseModal").style.display = "none";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector('form[action="/addPurchase"]');
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // Останавливаем обычную отправку
+            showModal(); // Показываем модалку
+        });
+    });
 </script>
 </body>
 </html>

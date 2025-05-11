@@ -8,6 +8,7 @@ import com.softserve.academy.model.Role;
 import com.softserve.academy.model.Store;
 import com.softserve.academy.repository.CustomerRepository;
 import com.softserve.academy.repository.ProductRepository;
+import com.softserve.academy.repository.StoreRepository;
 import com.softserve.academy.service.CategoryService;
 import com.softserve.academy.service.ProductService;
 import com.softserve.academy.service.StoreService;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class ProductViewController {
     StoreService storeService;
@@ -28,24 +31,29 @@ public class ProductViewController {
     ProductService productService;
     CategoryService categoryService;
     ProductRepository productRepository;
+    StoreRepository storeRepository;
     @Autowired
-    ProductViewController(StoreService storeService, CustomerRepository customerRepository, ProductService productService, CategoryService categoryService, ProductRepository productRepository) {
+    ProductViewController(StoreService storeService, CustomerRepository customerRepository, ProductService productService, CategoryService categoryService, ProductRepository productRepository,StoreRepository storeRepository) {
         this.storeService = storeService;
         this.customerRepository = customerRepository;
         this.productService = productService;
         this.categoryService = categoryService;
         this.productRepository = productRepository;
+        this.storeRepository = storeRepository;
     }
 
     @GetMapping("/ShowProdByStore/{id}")
     public String ShowProdByStore(@PathVariable("id") Long id,
                                   @RequestParam(name = "size", defaultValue = "3") int size,
                                   @RequestParam(name = "page", defaultValue = "0") int page,
-                                  Model model, HttpSession session) {
+                                  Model model,
+                                  HttpSession session,
+                                  @RequestParam(name="sortUp", defaultValue = "true") boolean sortUp,
+                                  @RequestParam(name="sortDown", defaultValue = "false") boolean sortDown) {
         if (session.getAttribute("customer") == null) {return "redirect:/";}
         Pageable pageable = PageRequest.of(page,size);
         Store store = storeService.getStoreById(id);
-        Page<Product> products = storeService.getProductsByStore(id,pageable);
+        Page<Product> products = storeService.getProductsByStore(id,pageable,sortUp,sortDown);
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("id", id);
         model.addAttribute("store", store);
@@ -54,6 +62,8 @@ public class ProductViewController {
         model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("hasPrev", page > 0);
         model.addAttribute("hasNext", page < products.getTotalPages() - 1);
+        model.addAttribute("sortUp", sortUp);
+        model.addAttribute("sortDown", sortDown);
         return "products";
     }
 
@@ -81,16 +91,28 @@ public class ProductViewController {
     @GetMapping("/getAllProd")
     public String showProds(HttpSession session, Model model,
                             @RequestParam(name = "size", defaultValue = "8") int size,
-                            @RequestParam(name = "page", defaultValue = "0") int page) {
+                            @RequestParam(name = "page", defaultValue = "0") int page,
+                            @RequestParam(name="sortUp", defaultValue = "true") boolean sortUp,
+                            @RequestParam(name="sortDown", defaultValue = "false") boolean sortDown
+    ) {
         if (session.getAttribute("customer") == null) {return "redirect:/";}
         Pageable pageable = PageRequest.of(page,size);
-        Page<Product> products = productRepository.findAll(pageable);
+        Page<Product> products = null;
+        if(sortDown){
+            products = productRepository.findAllOrderByPriceDesc(pageable);
+        }
+        if(sortUp){
+            products=productRepository.findAllOrderByPriceAsc(pageable);
+        }
+
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("hasPrev", page > 0);
         model.addAttribute("hasNext", page < products.getTotalPages() - 1);
+        model.addAttribute("sortUp", sortUp);
+        model.addAttribute("sortDown", sortDown);
         return "allProducts";
     }
 
@@ -184,5 +206,15 @@ public class ProductViewController {
         model.addAttribute("mode", "Alter Product");
         model.addAttribute("prodEdited", "Product successfully edited.");
         return "AddProd";
+
+    @GetMapping("/findStoresByProduct")
+    public String findStores(@RequestParam("productName") String productName, Model model, @RequestParam(name = "size", defaultValue = "8") int size,
+                             @RequestParam(name = "page", defaultValue = "0") int page) {
+        Product product = productRepository.findByName(productName);
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Store> stores = storeRepository.findByProductsContaining(product,pageable); // или другой метод
+        model.addAttribute("stores", stores);
+        model.addAttribute("productName", productName);
+        return "storesByProduct";
     }
 }
