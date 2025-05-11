@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.softserve.academy.model.*;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,11 +24,13 @@ import java.util.stream.Collectors;
 public class StoreService {
     public final StoreRepository storeRepo;
     public final ProductRepository prodRepo;
+    private final ProductService productService;
 
     @Autowired
-    public StoreService(StoreRepository storeRepo, ProductRepository prodRepo) {
+    public StoreService(StoreRepository storeRepo, ProductRepository prodRepo, ProductService productService) {
         this.storeRepo = storeRepo;
         this.prodRepo = prodRepo;
+        this.productService = productService;
     }
 
     public void addStore(Store store){
@@ -77,12 +80,31 @@ public class StoreService {
     }
 
     public Page<Product> getProductsByStore(Long id, Pageable pageable,boolean sortUp,boolean sortDown) {
-        if (sortUp) {
+        Store store = storeRepo.findById(id).orElse(null);
+        if (store==null) return null;
+        List<Product> prodList = new ArrayList<>(store.getProducts());
+        if(sortUp) {
+            prodList.sort(((p1, p2) -> (p1.getPrice().compareTo(p2.getPrice()))));
+        }
+        if (sortDown){
+            prodList.sort(((p1, p2) -> (p2.getPrice().compareTo(p1.getPrice()))));
+        }
+        int total = prodList.size();
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), total);
+        List<Product> pageContent = List.of();
+        if (start > end) {
+            pageContent = Collections.emptyList();
+        } else {
+            pageContent = prodList.subList(start, end);
+        }
+        return new PageImpl<>(pageContent, pageable, total);
+        /*if (sortUp) {
             return prodRepo.findByStoreIdOrderByPriceASC(id,pageable);
         } else if (sortDown) {
             return prodRepo.findByStoreIdOrderByPriceDesc(id,pageable);
         }
-        return prodRepo.findByStoreId(id,pageable);
+        return prodRepo.findByStoreId(id,pageable);*/
     }
 
     public boolean deleteStoreById(Long storeId){
@@ -111,6 +133,17 @@ public class StoreService {
         storeToUpdate.setEmail(!store.getEmail().isEmpty()?store.getEmail():storeToUpdate.getEmail());
         storeToUpdate.setLocation(!store.getLocation().isEmpty()?store.getLocation():storeToUpdate.getLocation());
         storeToUpdate.setContactNumber(!store.getContactNumber().isEmpty()?store.getContactNumber():storeToUpdate.getContactNumber());
+        return true;
+    }
+
+    @Transactional
+    public boolean pullProdOffStore(Long prodId, Long storeId){
+        Store store = storeRepo.findById(storeId).orElse(null);
+        Product prod = productService.getProductById(prodId);
+        if (!store.getProducts().contains(prod)) return false;
+        if (prod==null||store==null) return false;
+        prod.getStores().remove(store);
+        store.getProducts().remove(prod);
         return true;
     }
 }

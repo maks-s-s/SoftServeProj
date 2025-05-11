@@ -61,16 +61,17 @@
     </style>
 </head>
 
-<body>
+<body th:with="actionurl=${pushOut?'/pullProdOffStore':'/pushProdToStore'}">
 <a th:href="@{/manageStores}" class="back-btn">← Back</a>
 <div class="card-container">
     <div class="card">
         <div class="card-header">
-            <h2 class="h5 mb-0">Push Product to Store</h2>
+            <h2 class="h5 mb-0" th:text="${pushOut?'Pull Product Off Store':'Push Product to Store'}"></h2>
         </div>
         <div class="card-body">
             <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}"
                   th:object="${ProdToStoreForm}"
+                  th:action="@{${actionurl}}"
                   method="post"
                   novalidate>
 
@@ -104,8 +105,10 @@
                          th:errors="*{prodId}"></div>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-submit">Add</button>
+                <button type="submit" class="btn btn-primary btn-submit" th:text="${pushOut?'Pull out':'Push to'}"></button>
                 <small class="mt-2 text-success" th:if="${pushSuccess}" th:text="${pushSuccess}"></small>
+                <small class="mt-2 text-success" th:if="${pulledOffSuccess}" th:text="${pulledOffSuccess}"></small>
+                <small class="mt-2 text-danger" th:if="${doesntSellError}" th:text="${doesntSellError}"></small>
                 <small class="mt-2 text-danger" th:if="${prodExistsInStore}" th:text="${prodExistsInStore}"></small>
             </form>
             <h3 class="text-center text-danger mt-3"

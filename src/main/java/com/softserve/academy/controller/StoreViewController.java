@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @Controller
 public class StoreViewController {
@@ -120,6 +121,7 @@ public class StoreViewController {
         if (session.getAttribute("customer") == null) {return "redirect:/";}
 
         model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("pushOut", false);
         model.addAttribute("ProdToStoreForm", new ProdToStoreForm());
         model.addAttribute("stores", storeSrv.getAllStoresListType());
         model.addAttribute("prods", productService.getAllProductsListType());
@@ -133,23 +135,19 @@ public class StoreViewController {
         if (session.getAttribute("customer") == null) {return "redirect:/";}
 
         Customer customer = (Customer) session.getAttribute("customer");
-        boolean errsExist = false;
         if (customer.getRole() != Role.ADMIN){
             model.addAttribute("authError", "You don't have access to this page.");
             return "PushProdToStore";}
-        if (storeSrv.getStoreById(prodToStoreForm.getStoreId()).getProducts().contains(productService.getProductById(prodToStoreForm.getProdId()))) {
-            model.addAttribute("customer", session.getAttribute("customer"));
-            model.addAttribute("ProdToStoreForm", new ProdToStoreForm());
-            model.addAttribute("stores", storeSrv.getAllStoresListType());
-            model.addAttribute("prods", productService.getAllProductsListType());
-            model.addAttribute("prodExistsInStore", "This product is already selling in this store");
-            return "PushProdToStore";
-        }
-        model.addAttribute("pushSuccess", "Product successfully pushed to store.");
+        model.addAttribute("pushOut", false);
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("ProdToStoreForm", new ProdToStoreForm());
         model.addAttribute("stores", storeSrv.getAllStoresListType());
         model.addAttribute("prods", productService.getAllProductsListType());
+        if (storeSrv.getStoreById(prodToStoreForm.getStoreId()).getProducts().contains(productService.getProductById(prodToStoreForm.getProdId()))) {
+            model.addAttribute("prodExistsInStore", "This product is already selling in this store");
+            return "PushProdToStore";
+        }
+        model.addAttribute("pushSuccess", "Product successfully pushed to store.");
         storeSrv.addProductToStore(prodToStoreForm.getStoreId(), prodToStoreForm.getProdId());
         return "PushProdToStore";
     }
@@ -181,6 +179,39 @@ public class StoreViewController {
         model.addAttribute("storeDeleted", "Store successfully deleted.");
         model.addAttribute("StoreDTO", new StoreDTO());
         return "delStore";
+    }
+
+    @GetMapping("/pullProdOffStore")
+    public String pushOutProdPage(Model model, HttpSession session){
+        model.addAttribute("pushOut", true);
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("ProdToStoreForm", new ProdToStoreForm());
+        model.addAttribute("stores", storeSrv.getAllStoresListType());
+        model.addAttribute("prods", productService.getAllProductsListType());
+        return "PushProdToStore";
+    }
+
+    @PostMapping("/pullProdOffStore")
+    public String pushOutProdProcess(Model model, HttpSession session, @Valid @ModelAttribute("ProdToStoreForm") ProdToStoreForm ptsf){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
+        Customer customer = (Customer) session.getAttribute("customer");
+        System.out.println("!!!!!!!!!!!!!"+ptsf.getStoreId()+"!!!!!!"+ptsf.getProdId()+"!!!");
+        if (customer.getRole() != Role.ADMIN){
+            model.addAttribute("authError", "You don't have access to this page.");
+            return "PushProdToStore";}
+        model.addAttribute("pushOut", true);
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("ProdToStoreForm", new ProdToStoreForm());
+        model.addAttribute("stores", storeSrv.getAllStoresListType());
+        model.addAttribute("prods", productService.getAllProductsListType());
+        if (!storeSrv.getStoreById(ptsf.getStoreId()).getProducts().contains(productService.getProductById(ptsf.getProdId()))){
+            model.addAttribute("doesntSellError", "This product isn't selling in this store");
+            return "PushProdToStore";
+        }
+        storeSrv.pullProdOffStore(ptsf.getProdId(), ptsf.getStoreId());
+        model.addAttribute("pulledOffSuccess", "Product pulled off the store");
+        return "PushProdToStore";
     }
 
 }
