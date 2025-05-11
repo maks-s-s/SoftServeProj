@@ -98,11 +98,29 @@
             font-size: 14px;
             text-decoration: none;
         }
+
+        .back-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5em 1em;
+            background-color: #3f37c9;
+            color: #f8f9fa;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
     </style>
 </head>
 <body>
 
-<a href="/category/goToCategories" class="back-to-home">Back to Category Page</a>
+<a onclick="history.back()"
+   class="back-btn">
+    ← Back
+</a>
 
 <div class="container">
     <h1 th:text="${catName}"></h1>
@@ -118,7 +136,6 @@
         </li>
     </ul>
 
-    <button class="back-button" onclick="history.back()">Go Back</button>
 </div>
 
 </body>

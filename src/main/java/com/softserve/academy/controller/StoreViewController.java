@@ -56,12 +56,16 @@ public class StoreViewController {
 
     @GetMapping("/manageStores")
     public String manageStores(Model model, HttpSession session){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("customer", session.getAttribute("customer"));
         return "StoreManage";
     }
 
     @GetMapping("/newStore")
     public String showNewStorePage(Model model, HttpSession session){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("StoreDTO", new StoreDTO());
         model.addAttribute("customer", session.getAttribute("customer"));
         return "AddStore";
@@ -70,6 +74,8 @@ public class StoreViewController {
     @PostMapping("/newStore")
     public String processNewStorePage(Model model, HttpSession session,
                                       @Valid @ModelAttribute("StoreDTO") StoreDTO storeDTO){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         Customer customer = (Customer) session.getAttribute("customer");
         model.addAttribute("customer", session.getAttribute("customer"));
         if (customer.getRole() != Role.ADMIN){
@@ -84,6 +90,8 @@ public class StoreViewController {
 
     @GetMapping("/pushProdToStore")
     public String pushProdToStore(Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("ProdToStoreForm", new ProdToStoreForm());
         model.addAttribute("stores", storeSrv.getAllStoresListType());
@@ -95,6 +103,8 @@ public class StoreViewController {
     @PostMapping("/pushProdToStore")
     public String processPushProdToStore(Model model, HttpSession session,
                                           @Valid @ModelAttribute("ProdToStoreForm") ProdToStoreForm prodToStoreForm) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         Customer customer = (Customer) session.getAttribute("customer");
         boolean errsExist = false;
         if (customer.getRole() != Role.ADMIN){
@@ -119,6 +129,8 @@ public class StoreViewController {
 
     @GetMapping("/delStore")
     public String deleteStorePage(Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("stores", storeSrv.getAllStoresListType());
         model.addAttribute("StoreDTO", new StoreDTO());
@@ -128,6 +140,8 @@ public class StoreViewController {
     @PostMapping("/delStore")
     public String deleteStoreProcess(Model model, HttpSession session,
                                      @Valid @ModelAttribute("StoreDTO") StoreDTO storeDTO) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         Customer customer = (Customer) session.getAttribute("customer");
         if (customer.getRole() != Role.ADMIN){
             model.addAttribute("authError", "You wish");

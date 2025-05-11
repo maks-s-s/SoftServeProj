@@ -48,6 +48,21 @@
         .back-btn:hover {
             background-color: #1d4ed8;
         }
+
+        .back-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5em 1em;
+            background-color: #3f37c9;
+            color: #f8f9fa;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
     </style>
 </head>
 <body>
@@ -63,7 +78,10 @@
         <div class="store-address" th:text="'Адрес: ' + ${store.location}"></div>
     </div>
 
-    <a href="/goToSearchStore" class="back-btn">← Back to search</a>
+    <a onclick="history.back()"
+       class="back-btn">
+        ← Back
+    </a>
 </div>
 </body>
 </html>

@@ -118,6 +118,8 @@ public class ProductViewController {
 
     @GetMapping("/product/addProd")
     public String showAddProd(Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("mode", "Add Product");
         model.addAttribute("categories", categoryService.findAllCategoriesListType());
@@ -131,6 +133,8 @@ public class ProductViewController {
     public String processAddProd(Model model,
                                  HttpSession session,
                                  @Valid @ModelAttribute("ProductDTO") ProductDTO productDTO) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         Customer customer = (Customer) session.getAttribute("customer");
         boolean errsExist = false;
         if (customer.getRole() != Role.ADMIN){
@@ -152,12 +156,16 @@ public class ProductViewController {
 
     @GetMapping("/product/manageProducts")
     public String manageProducts(Model model, HttpSession session){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("customer", session.getAttribute("customer"));
         return "ProdManage";
     }
 
     @GetMapping("/product/delProd")
     public String deleteProductPage(Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("products", productService.getAllProductsListType());
         model.addAttribute("ProductDTO", new ProductDTO());
@@ -167,6 +175,8 @@ public class ProductViewController {
     @PostMapping("/product/delProd")
     public String deleteProductProcess(Model model, HttpSession session,
                                      @Valid @ModelAttribute("ProductDTO") ProductDTO productDTO) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         Customer customer = (Customer) session.getAttribute("customer");
         if (customer.getRole() != Role.ADMIN){
             model.addAttribute("authError", "You wish");
@@ -183,6 +193,8 @@ public class ProductViewController {
 
     @GetMapping("/product/alterProd")
     public String editProductPage(Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("prods", productService.getAllProductsListType());
         model.addAttribute("ProductDTO", new ProductDTO());
@@ -194,8 +206,10 @@ public class ProductViewController {
     @PostMapping("/product/alterProd")
     public String processEditProductPage(Model model, HttpSession session,
                                          @Valid @ModelAttribute("ProductDTO") ProductDTO productDTO) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         Customer customer = (Customer) session.getAttribute("customer");
-        if (customer.getRole() != Role.ADMIN){
+        if (customer.getRole() != Role.ADMIN) {
             model.addAttribute("authError", "You don't have access to this page.");
         }
         productService.updateProduct(productDTO, productService.getProductById(productDTO.getId()));
@@ -206,10 +220,13 @@ public class ProductViewController {
         model.addAttribute("mode", "Alter Product");
         model.addAttribute("prodEdited", "Product successfully edited.");
         return "AddProd";
+    }
 
     @GetMapping("/findStoresByProduct")
     public String findStores(@RequestParam("productName") String productName, Model model, @RequestParam(name = "size", defaultValue = "8") int size,
-                             @RequestParam(name = "page", defaultValue = "0") int page) {
+                             @RequestParam(name = "page", defaultValue = "0") int page, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         Product product = productRepository.findByName(productName);
         Pageable pageable = PageRequest.of(page,size);
         Page<Store> stores = storeRepository.findByProductsContaining(product,pageable); // или другой метод

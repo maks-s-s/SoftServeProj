@@ -50,6 +50,8 @@ public class CategoryViewController {
 
     @GetMapping("/addProdToCat")
     public String showProductToCategory(Model model, HttpSession session) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("ProdToCatForm", new ProdToCatForm());
         model.addAttribute("prods", prodSvc.getAllProductsListType());
         model.addAttribute("cats", catSvc.findAllCategoriesListType());
@@ -61,6 +63,8 @@ public class CategoryViewController {
     @PostMapping("/addProdToCat")
     public String processProductToCategory(Model model, HttpSession session,
                                            @Valid @ModelAttribute("ProdToCatForm") ProdToCatForm prodToCatForm) {
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         Customer customer = (Customer) session.getAttribute("customer");
         model.addAttribute("customer", session.getAttribute("customer"));
         if (catSvc.getCategoryById(prodToCatForm.getCatId()).getProducts().contains(prodSvc.getProductById(prodToCatForm.getProdId()))) {
@@ -80,12 +84,16 @@ public class CategoryViewController {
 
     @GetMapping("/manageCategories")
     public String manageCategories(Model model, HttpSession session){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("customer", session.getAttribute("customer"));
         return "CatManage";
     }
 
     @GetMapping("/newCategory")
     public String showNewCategoryPage(Model model, HttpSession session){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
         model.addAttribute("CategoryDTO", new Category());
         model.addAttribute("customer", session.getAttribute("customer"));
         return "AddCategory";
