@@ -69,10 +69,16 @@ public class ProductViewController {
 
     @GetMapping("/byCategory/{catId}")
     public String showProdsByCategory(@PathVariable("catId") Long id,
+                                      @RequestParam(name = "page", defaultValue = "0") int page,
                                       Model model, HttpSession session){
         if (session.getAttribute("customer") == null) {return "redirect:/";}
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(page, 5);
         Page<Product> prods = productService.getProductsByCategory(id, pageable);
+        model.addAttribute("catId", id);
+        model.addAttribute("hasPrev", page > 0);
+        model.addAttribute("hasNext", page < prods.getTotalPages() - 1);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", prods.getTotalPages());
         model.addAttribute("prods", prods);
         model.addAttribute("catName", categoryService.getCategoryById(id).getName());
         return "ProdsByCategory";

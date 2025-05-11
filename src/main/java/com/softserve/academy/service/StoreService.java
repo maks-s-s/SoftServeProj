@@ -16,10 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.softserve.academy.model.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -103,5 +100,17 @@ public class StoreService {
             store.setName(newName);
             storeRepo.save(store);
         }
+    }
+
+    @Transactional
+    public boolean updateStore(Long id, StoreDTO store){
+        Store storeToUpdate = storeRepo.findById(id).orElse(null);
+        if (storeToUpdate==null) return false;
+        System.out.println(store);
+        storeToUpdate.setName(!store.getName().isEmpty()?store.getName():storeToUpdate.getName());
+        storeToUpdate.setEmail(!store.getEmail().isEmpty()?store.getEmail():storeToUpdate.getEmail());
+        storeToUpdate.setLocation(!store.getLocation().isEmpty()?store.getLocation():storeToUpdate.getLocation());
+        storeToUpdate.setContactNumber(!store.getContactNumber().isEmpty()?store.getContactNumber():storeToUpdate.getContactNumber());
+        return true;
     }
 }

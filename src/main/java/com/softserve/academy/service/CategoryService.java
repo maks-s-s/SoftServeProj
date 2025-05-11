@@ -1,6 +1,7 @@
 package com.softserve.academy.service;
 
 import aj.org.objectweb.asm.ConstantDynamic;
+import com.softserve.academy.dto.CategoryDTO;
 import com.softserve.academy.model.Category;
 import com.softserve.academy.model.Customer;
 import com.softserve.academy.model.Product;
@@ -55,6 +56,14 @@ public class CategoryService {
         product.getCategory().getProducts().remove(product);
         category.getProducts().add(product);
         product.setCategory(category);
+        return true;
+    }
+
+    @Transactional
+    public boolean updateCategory(Long id, CategoryDTO categoryDTO){
+        Category category = getCategoryById(categoryDTO.getId());
+        if (category==null) return false;
+        category.setName(categoryDTO.getName().isEmpty()?category.getName(): categoryDTO.getName());
         return true;
     }
 }

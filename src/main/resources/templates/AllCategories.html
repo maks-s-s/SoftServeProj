@@ -14,6 +14,29 @@
             --bg-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
         }
 
+        .page-btn{
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: Arial, sans-serif;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            color: #212529;
+            border: 2px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 25px;
+        }
+
+        .page-buttons{
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
         .back-btn {
             position: absolute;
             top: 1rem;       /* distance from top edge */
@@ -239,7 +262,7 @@
             <button class="profile-icon" onclick="toggleMenu()">☰</button>
         </div>
     </div>
-    <a onclick="history.back()"
+    <a th:href="@{/buy}"
        class="back-btn">
         ← Back
     </a>
@@ -259,6 +282,13 @@
             </a>
         </li>
     </ul>
+    <div class= "page-buttons">
+        <a  th:if="${hasPrev}"
+            th:href="@{/getAllProd(page=${currentPage - 1}, sortUp=${sortUp}, sortDown=${sortDown})}" class="page-btn prev">←</a>
+        <span class="page-info" th:text=" ${currentPage + 1 + '/' + totalPages}"> </span>
+        <a th:if="${hasNext}"
+           th:href="@{/getAllProd(page=${currentPage + 1}, sortUp=${sortUp}, sortDown=${sortDown})}" class="page-btn prev">→</a>
+    </div>
 </div>
 <script>
     function toggleMenu() {

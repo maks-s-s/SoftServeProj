@@ -111,7 +111,7 @@
 </head>
 <body>
 <header class="header">
-  <a onclick="history.back()" class="back-btn">← Back</a>
+  <a th:href="@{/buy}" class="back-btn">← Back</a>
   <h1>Managing Categories</h1>
 </header>
 <div class="center-container">
@@ -120,6 +120,9 @@
       <div th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" class="button-container">
         <form action="/category/newCategory" method="get">
           <button type="submit" class="btn-primary">Add Category</button>
+        </form>
+        <form action="/category/alterCategory" method="get">
+          <button type="submit" class="btn-primary">Alter Category</button>
         </form>
         <form action="/category/delCat" method="get">
           <button type="submit" class="btn-danger">Delete Category</button>

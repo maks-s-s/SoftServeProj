@@ -12,6 +12,7 @@ import com.softserve.academy.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,13 +38,16 @@ public class CategoryViewController {
     @GetMapping("/goToCategories")
     public String showCategories(HttpSession session,
                                  Model model,
-                                 @RequestParam(name = "size", defaultValue = "5") int size,
                                  @RequestParam(name = "page", defaultValue = "0") int page) {
         if (session.getAttribute("customer") == null) {return "redirect:/";}
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, 5);
         Page<Category> categories = catSvc.findAllCategories(pageable);
         System.out.println(categories);
         model.addAttribute("categories", categories);
+        model.addAttribute("hasPrev", page > 0);
+        model.addAttribute("hasNext", page < categories.getTotalPages() - 1);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", categories.getTotalPages());
         model.addAttribute("customer", session.getAttribute("customer"));
         return "AllCategories";
     }
@@ -95,6 +99,7 @@ public class CategoryViewController {
         if (session.getAttribute("customer") == null) {return "redirect:/";}
 
         model.addAttribute("CategoryDTO", new Category());
+        model.addAttribute("alterCategory", false);
         model.addAttribute("customer", session.getAttribute("customer"));
         return "AddCategory";
     }
@@ -106,11 +111,12 @@ public class CategoryViewController {
         for (Category cat:catSvc.findAllCategoriesListType()){
             if (cat.getName().equals(categoryDTO.getName())){
                 model.addAttribute("categoryNameError", "Category with this name already exists.");
+                model.addAttribute("alterCategory", false);
+                model.addAttribute("CategoryDTO", new Category());
                 model.addAttribute("customer", session.getAttribute("customer"));
                 return "AddCategory";
             }
         }
-        model.addAttribute("customer", session.getAttribute("customer"));
         if (customer.getRole() != Role.ADMIN){
             model.addAttribute("authError", "You wish");
             return "AddCategory";
@@ -118,7 +124,30 @@ public class CategoryViewController {
         catSvc.addCategory(CategoryMapper.toCategory(categoryDTO));
         model.addAttribute("CategoryDTO", new Category());
         model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("alterCategory", false);
         model.addAttribute("categoryAdded", "Category successfully added.");
+        return "AddCategory";
+    }
+
+
+    @GetMapping("/alterCategory")
+    public String alterCategoryPage(Model model, HttpSession session){
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("cats", catSvc.findAllCategoriesListType());
+        model.addAttribute("CategoryDTO", new Category());
+        model.addAttribute("alterCategory", true);
+        return "AddCategory";
+    }
+
+    @PostMapping("/alterCategory")
+    public String processAlterCategory(Model model, HttpSession session,
+                                       @Valid @ModelAttribute CategoryDTO categoryDTO){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+        catSvc.updateCategory(categoryDTO.getId(), categoryDTO);
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("cats", catSvc.findAllCategoriesListType());
+        model.addAttribute("CategoryDTO", new Category());
+        model.addAttribute("alterCategory", true);
         return "AddCategory";
     }
 

@@ -41,7 +41,7 @@
     <title>Add Product</title>
 </head>
 <body class="flex-center">
-<a onclick="history.back()"
+<a th:href="@{/product/manageProducts}"
    class="btn btn-secondary position-absolute top-0 start-0 m-3">
     ← Back
 </a>
@@ -98,7 +98,7 @@
             <input pattern="^\d+(\.\d{1,2})?$" th:field="*{discount}" class="form-control" type="text" placeholder="Product Discount" th:attrappend="required=${isRequired}">
             <div class="invalid-feedback" th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"></div>
         </div>
-        <button class="btn btn-primary w-100" type="submit">Add</button>
+        <button class="btn btn-primary w-100" type="submit" th:text="${alterMode?'Alter':'Add'}"></button>
         <div class="mt-2 text-success" th:if="${prodAdded}" th:text="${prodAdded}"></div>
         <div class="mt-2 text-success" th:if="${prodEdited}" th:text="${prodEdited}"></div>
     </form>

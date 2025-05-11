@@ -18,4 +18,6 @@ public class StoreDTO {
     public boolean validate(){
         return name!=null && email!=null && location!=null && contactNumber!=null;
     }
+    @Override
+    public String toString() {return name+" "+location+" "+email+" "+contactNumber;}
 }

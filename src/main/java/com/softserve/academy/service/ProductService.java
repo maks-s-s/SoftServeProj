@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductService {
@@ -42,11 +43,11 @@ public class ProductService {
 
     @Transactional
     public void updateProduct(ProductDTO prodDetails, Product product){
-        if (prodDetails.categoryId==null) {prodDetails.categoryId=product.getCategory().getId();}
-        product.setDescription(prodDetails.getDescription()!=null? prodDetails.getDescription() : product.getDescription() );
-        product.setName(prodDetails.getName()!=null? prodDetails.getName() : product.getName());
+        product.setCategory(catRepo.findById(prodDetails.getCategoryId()).isEmpty()?product.getCategory():catRepo.findById(prodDetails.getCategoryId()).get());
+        product.setDescription(!Objects.equals(prodDetails.getDescription(), "") || Objects.equals(prodDetails.getDescription(), null)? prodDetails.getDescription() : product.getDescription() );
+        product.setName(!Objects.equals(prodDetails.getName(), "") || Objects.equals(prodDetails.getName(), null)? prodDetails.getName() : product.getName());
         product.setPrice(prodDetails.getPrice()!=null? prodDetails.getPrice():product.getPrice());
-        product.setCategory(product.getCategory());
+        product.setDiscount(prodDetails.getDiscount()!=null? prodDetails.getDiscount():product.getDiscount());
     }
 
     public Product getProductById(Long id){

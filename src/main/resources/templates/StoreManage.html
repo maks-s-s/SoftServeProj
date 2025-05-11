@@ -111,7 +111,7 @@
 </head>
 <body>
 <header class="header">
-    <a onclick="history.back()" class="back-btn">← Back</a>
+    <a th:href="@{/buy}" class="back-btn">← Back</a>
     <h1>Managing Stores</h1>
 </header>
 <div class="center-container">
@@ -120,6 +120,9 @@
             <div th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" class="button-container">
                 <form action="/newStore" method="get">
                     <button type="submit" class="btn-primary">Add Store</button>
+                </form>
+                <form action="/alterStore" method="get">
+                    <button type="submit" class="btn-primary">Alter Store</button>
                 </form>
                 <form action="/pushProdToStore" method="get">
                     <button type="submit" class="btn-secondary">Push Product to Store</button>

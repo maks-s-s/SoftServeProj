@@ -67,6 +67,7 @@ public class StoreViewController {
         if (session.getAttribute("customer") == null) {return "redirect:/";}
 
         model.addAttribute("StoreDTO", new StoreDTO());
+        model.addAttribute("alterStore", false);
         model.addAttribute("customer", session.getAttribute("customer"));
         return "AddStore";
     }
@@ -83,10 +84,36 @@ public class StoreViewController {
         }
         storeSrv.addStore(StoreMapper.toStore(storeDTO));
         model.addAttribute("StoreDTO", new StoreDTO());
+        model.addAttribute("alterStore", false);
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("storeAdded", "Store successfully added.");
         return "AddStore";
     }
+
+    @GetMapping("/alterStore")
+    public String showAlterStorePage(Model model, HttpSession session){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+
+        model.addAttribute("StoreDTO", new StoreDTO());
+        model.addAttribute("stores", storeSrv.getAllStoresListType());
+        model.addAttribute("alterStore", true);
+        model.addAttribute("customer", session.getAttribute("customer"));
+        return "AddStore";
+    }
+
+    @PostMapping("/alterStore")
+    public String processAlterStorePage(Model model, HttpSession session,
+                                         @Valid @ModelAttribute("StoreDTO") StoreDTO storeDTO){
+        if (session.getAttribute("customer") == null) {return "redirect:/";}
+        storeSrv.updateStore(storeDTO.id, storeDTO);
+        model.addAttribute("StoreDTO", new StoreDTO());
+        model.addAttribute("stores", storeSrv.getAllStoresListType());
+        model.addAttribute("alterStore", true);
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("storeEdited", "Store successfully updated.");
+        return "AddStore";
+    }
+
 
     @GetMapping("/pushProdToStore")
     public String pushProdToStore(Model model, HttpSession session) {
