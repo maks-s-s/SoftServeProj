@@ -49,4 +49,9 @@ public class StoreRestController {
         if (stores==null){return ResponseEntity.notFound().build();}
         return ResponseEntity.ok(stores);
     }
+
+    @PutMapping("/rename")
+    public void rename (@RequestParam("id") Long id, @RequestParam("newName") String newName) {
+        storeSvc.rename(id, newName);
+    }
 }

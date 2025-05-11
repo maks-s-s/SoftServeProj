@@ -96,4 +96,12 @@ public class StoreService {
         storeRepo.deleteById(storeId);
         return true;
     }
+
+    public void rename (Long id, String newName) {
+        Store store = storeRepo.findById(id).orElse(null);
+        if (store != null) {
+            store.setName(newName);
+            storeRepo.save(store);
+        }
+    }
 }
