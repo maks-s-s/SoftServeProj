@@ -19,6 +19,25 @@
       box-sizing: border-box;
       font-family: 'Segoe UI', system-ui, sans-serif;
     }
+    .back-btn {
+      position: absolute;
+      top: 1rem;       /* distance from top edge */
+      left: 1rem;      /* distance from left edge */
+      padding: 0.5em 1em;
+      background-color: #3f37c9;   /* secondary color */
+      color: #f8f9fa;             /* light text */
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background-color 0.2s, box-shadow 0.2s;
+    }
+
+    .back-btn:hover {
+      background-color: #4361ee;   /* primary color on hover */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
     body{
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
@@ -277,7 +296,10 @@
   </div>
 </div>
 <header class="header">
-
+  <a onclick="history.back()"
+     class="back-btn">
+    ← Back
+  </a>
   <h1 class="headerh1">Available stores</h1>
 </header>
 <div class = "menu-container">

@@ -13,7 +13,10 @@ import java.util.List;
  */
 @Entity
 @Setter
+@Builder
+@AllArgsConstructor
 @Getter
+@NoArgsConstructor
 public class Category {
     @GeneratedValue
     @Id

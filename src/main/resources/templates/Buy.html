@@ -21,6 +21,26 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
+        .back-btn {
+            position: absolute;
+            top: 1rem;       /* distance from top edge */
+            left: 1rem;      /* distance from left edge */
+            padding: 0.5em 1em;
+            background-color: #3f37c9;   /* secondary color */
+            color: #f8f9fa;             /* light text */
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: #4361ee;   /* primary color on hover */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
         body {
             background-color: #f8f9fa;
             color: var(--text-dark);
@@ -44,7 +64,7 @@
             display: flex;
             justify-content: center; /* x */
             align-items: center;     /* y */
-            height: 30vh;            /* Height */
+            height: 45vh;            /* Height */
         }
 
         .button-container {
@@ -201,6 +221,10 @@
         <button class="profile-icon" onclick="toggleMenu()">☰</button>
     </div>
 </div>
+    <a onclick="history.back()"
+       class="back-btn">
+        ← Back
+    </a>
     <h1>
         Choose option
     </h1>
@@ -210,14 +234,21 @@
         <form action="/getAllProd" method="get">
             <button type="submit">Buy</button>
         </form>
-
-
-    <form action="/category/goToCategories" method="get">
-        <button type="submit">All categories</button>
-    </form>
-    <form action="/StoreViewAll" method="get">
-        <button type="submit">Stores</button>
-    </form>
+        <form action="/category/goToCategories" method="get">
+            <button type="submit">All categories</button>
+        </form>
+        <form action="/StoreViewAll" method="get">
+            <button type="submit">Stores</button>
+        </form>
+        <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" action="/manageStores">
+            <button type="submit">Manage Stores</button>
+        </form>
+        <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" action="/product/manageProducts">
+            <button type="submit">Manage Products</button>
+        </form>
+        <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" action="/category/manageCategories">
+            <button type="submit">Manage Categories</button>
+        </form>
 </div>
 </div>
 

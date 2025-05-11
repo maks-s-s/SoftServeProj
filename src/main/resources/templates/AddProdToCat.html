@@ -1,0 +1,122 @@
+
+
+<!--<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+    <style>
+        html, body { height: 100%; }
+        .flex-center {
+            display: flex; align-items: center; justify-content: center; height: 100%;
+            background-color: #f8f9fa;
+        }
+        .form-control { transition: border-color .2s, box-shadow .2s; }
+        .form-control:focus {
+            border-color: #86b7fe; box-shadow: 0 0 0 .2rem rgba(13,110,253,.25);
+        }
+        .invalid-feedback { display: block; font-size: .875em; color: #dc3545; }
+    </style>
+    <title>Set/replace product's category</title>
+</head>
+<body class="flex-center">
+<a onclick="history.back()"
+   class="btn btn-secondary position-absolute top-0 start-0 m-3">
+    ← Back
+</a>
+<div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%;">
+    <h1 class="h4 mb-3 text-center">Set/replace product's category</h1>
+    <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" th:action="@{/category/addProdToCat}" th:object="${ProdToCatForm}" method="post" novalidate>
+        <div class="mb-3">
+            <input pattern="\\d*" th:field="*{prodId}" class="form-control" placeholder="Product ID" required>
+            <div class="invalid-feedback" th:if="${prodIDError}" th:text="${prodIDError}"></div>
+        </div>
+        <div class="mb-3">
+            <input pattern="\\d*" th:field="*{catId}" class="form-control" placeholder="Category ID" required>
+            <div class="invalid-feedback" th:if="${catIDError}" th:text="${catIDError}"></div>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Add</button>
+        <div class="mt-2 text-success" th:if="${prodAdded}" th:text="${prodAdded}"></div>
+        <div class="mt-2 text-danger" th:if="${prodInCatError}" th:text="${prodInCatError}"></div>
+    </form>
+    <h3 th:unless="${customer.role==T(com.softserve.academy.model.Role).ADMIN}">You are not allowed to do this</h3>
+</div>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>
+-->
+
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+    <style>
+        html, body { height: 100%; }
+        .flex-center {
+            display: flex; align-items: center; justify-content: center; height: 100%;
+            background-color: #f8f9fa;
+        }
+        .form-control { transition: border-color .2s, box-shadow .2s; }
+        .form-control:focus {
+            border-color: #86b7fe; box-shadow: 0 0 0 .2rem rgba(13,110,253,.25);
+        }
+        .invalid-feedback { display: block; font-size: .875em; color: #dc3545; }
+    </style>
+    <title>Set/replace product's category</title>
+</head>
+<body class="flex-center">
+<a onclick="history.back()"
+   class="btn btn-secondary position-absolute top-0 start-0 m-3">
+    ← Back
+</a>
+<div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%;">
+    <h1 class="h4 mb-3 text-center">Set/replace product's category</h1>
+    <form th:if="${customer.role==T(com.softserve.academy.model.Role).ADMIN}" th:action="@{/category/addProdToCat}" th:object="${ProdToCatForm}" method="post" novalidate>
+        <div class="mb-3">
+            <label class="form-label">Product</label>
+            <select th:field="*{prodId}" class="form-select" required>
+                <option value="" disabled
+                        th:if="${#fields.hasErrors('prodId') == false}"
+                        selected>— Select a product —</option>
+                <option th:each="prod : ${prods}"
+                        th:value="${prod.id}"
+                        th:text="${prod.name}">
+                </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('prodId')}"
+                 th:errors="*{prodId}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select th:field="*{catId}" class="form-select" required>
+                <option value="" disabled
+                        th:if="${#fields.hasErrors('prodId') == false}"
+                        selected>— Select a product —</option>
+                <option th:each="cat : ${cats}"
+                        th:value="${cat.id}"
+                        th:text="${cat.name}">
+                </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('prodId')}"
+                 th:errors="*{prodId}"></div>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Add</button>
+        <div class="mt-2 text-success" th:if="${catAdded}" th:text="${catAdded}"></div>
+        <div class="mt-2 text-danger" th:if="${prodInCatError}" th:text="${prodInCatError}"></div>
+    </form>
+    <h3 th:unless="${customer.role==T(com.softserve.academy.model.Role).ADMIN}">You are not allowed to do this</h3>
+</div>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>

@@ -3,9 +3,12 @@ package com.softserve.academy.controller;
 
 import com.softserve.academy.dto.StoreDTO;
 
-import com.softserve.academy.model.Customer;
+import com.softserve.academy.mappers.StoreMapper;
+import com.softserve.academy.model.*;
 import com.softserve.academy.repository.CustomerRepository;
+import com.softserve.academy.service.ProductService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.ui.Model;
 
 import com.softserve.academy.service.StoreService;
@@ -20,13 +23,15 @@ import java.util.List;
 
 @Controller
 public class StoreViewController {
+    private final ProductService productService;
     StoreService storeSrv;
     CustomerRepository customerRepository;
 
     @Autowired
-    public StoreViewController(StoreService storeSrv,CustomerRepository customerRepository) {
+    public StoreViewController(StoreService storeSrv, CustomerRepository customerRepository, ProductService productService) {
         this.storeSrv = storeSrv;
         this.customerRepository = customerRepository;
+        this.productService = productService;
     }
     @GetMapping("/StoreViewAll")
     public String StoreViewAll(HttpSession session,
@@ -36,7 +41,7 @@ public class StoreViewController {
         if (session.getAttribute("customer") == null) {return "redirect:/";}
 
         Pageable pageable = PageRequest.of(page,size);
-        Page<StoreDTO> store = storeSrv.getAllStores(pageable);
+        Page<Store> store = storeSrv.getAllStores(pageable);
         model.addAttribute("customer", session.getAttribute("customer"));
         model.addAttribute("store", store);
         model.addAttribute("currentPage", page);
@@ -47,6 +52,94 @@ public class StoreViewController {
 
         return "Stores";
 
+    }
+
+    @GetMapping("/manageStores")
+    public String manageStores(Model model, HttpSession session){
+        model.addAttribute("customer", session.getAttribute("customer"));
+        return "StoreManage";
+    }
+
+    @GetMapping("/newStore")
+    public String showNewStorePage(Model model, HttpSession session){
+        model.addAttribute("StoreDTO", new StoreDTO());
+        model.addAttribute("customer", session.getAttribute("customer"));
+        return "AddStore";
+    }
+
+    @PostMapping("/newStore")
+    public String processNewStorePage(Model model, HttpSession session,
+                                      @Valid @ModelAttribute("StoreDTO") StoreDTO storeDTO){
+        Customer customer = (Customer) session.getAttribute("customer");
+        model.addAttribute("customer", session.getAttribute("customer"));
+        if (customer.getRole() != Role.ADMIN){
+            model.addAttribute("authError", "You don't have access to this page.");
+        }
+        storeSrv.addStore(StoreMapper.toStore(storeDTO));
+        model.addAttribute("StoreDTO", new StoreDTO());
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("storeAdded", "Store successfully added.");
+        return "AddStore";
+    }
+
+    @GetMapping("/pushProdToStore")
+    public String pushProdToStore(Model model, HttpSession session) {
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("ProdToStoreForm", new ProdToStoreForm());
+        model.addAttribute("stores", storeSrv.getAllStoresListType());
+        model.addAttribute("prods", productService.getAllProductsListType());
+        return "PushProdToStore";
+    }
+
+
+    @PostMapping("/pushProdToStore")
+    public String processPushProdToStore(Model model, HttpSession session,
+                                          @Valid @ModelAttribute("ProdToStoreForm") ProdToStoreForm prodToStoreForm) {
+        Customer customer = (Customer) session.getAttribute("customer");
+        boolean errsExist = false;
+        if (customer.getRole() != Role.ADMIN){
+            model.addAttribute("authError", "You don't have access to this page.");
+            return "PushProdToStore";}
+        if (storeSrv.getStoreById(prodToStoreForm.getStoreId()).getProducts().contains(productService.getProductById(prodToStoreForm.getProdId()))) {
+            model.addAttribute("customer", session.getAttribute("customer"));
+            model.addAttribute("ProdToStoreForm", new ProdToStoreForm());
+            model.addAttribute("stores", storeSrv.getAllStoresListType());
+            model.addAttribute("prods", productService.getAllProductsListType());
+            model.addAttribute("prodExistsInStore", "This product is already selling in this store");
+            return "PushProdToStore";
+        }
+        model.addAttribute("pushSuccess", "Product successfully pushed to store.");
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("ProdToStoreForm", new ProdToStoreForm());
+        model.addAttribute("stores", storeSrv.getAllStoresListType());
+        model.addAttribute("prods", productService.getAllProductsListType());
+        storeSrv.addProductToStore(prodToStoreForm.getStoreId(), prodToStoreForm.getProdId());
+        return "PushProdToStore";
+    }
+
+    @GetMapping("/delStore")
+    public String deleteStorePage(Model model, HttpSession session) {
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("stores", storeSrv.getAllStoresListType());
+        model.addAttribute("StoreDTO", new StoreDTO());
+        return "delStore";
+    }
+
+    @PostMapping("/delStore")
+    public String deleteStoreProcess(Model model, HttpSession session,
+                                     @Valid @ModelAttribute("StoreDTO") StoreDTO storeDTO) {
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer.getRole() != Role.ADMIN){
+            model.addAttribute("authError", "You wish");
+            model.addAttribute("customer", session.getAttribute("customer"));
+            return "delStore";
+        }
+        storeSrv.deleteStoreById(storeDTO.getId());
+        model.addAttribute("customer", session.getAttribute("customer"));
+        model.addAttribute("stores", storeSrv.getAllStoresListType());
+        model.addAttribute("storeDeleted", "Store successfully deleted.");
+        model.addAttribute("StoreDTO", new StoreDTO());
+        return "delStore";
     }
 
 }

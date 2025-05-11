@@ -21,7 +21,14 @@ public class ProductDTO {
 
     public Long categoryId;
 
+    public String description;
+
+    public Double discount;
+
     public boolean validate(){
         return name!=null && price!=null && categoryId!=null;
     }
+
+    @Override
+    public String toString() {return name+" "+price+" "+categoryId + " " + description;}
 }
