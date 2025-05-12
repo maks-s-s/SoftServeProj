@@ -83,15 +83,15 @@ public class StoreService {
         Store store = storeRepo.findById(id).orElse(null);
         if (store==null) return null;
         List<Product> prodList = new ArrayList<>(store.getProducts());
+        int total = prodList.size();
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), total);
         if(sortUp) {
             prodList.sort(((p1, p2) -> (p1.getPrice().compareTo(p2.getPrice()))));
         }
         if (sortDown){
             prodList.sort(((p1, p2) -> (p2.getPrice().compareTo(p1.getPrice()))));
         }
-        int total = prodList.size();
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), total);
         List<Product> pageContent = List.of();
         if (start > end) {
             pageContent = Collections.emptyList();

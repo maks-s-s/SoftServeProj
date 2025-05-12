@@ -2,6 +2,7 @@ package com.softserve.academy.controller;
 
 
 import com.softserve.academy.dto.ProductDTO;
+import com.softserve.academy.dto.PurchaseDTO;
 import com.softserve.academy.model.Customer;
 import com.softserve.academy.model.Product;
 import com.softserve.academy.model.Role;
@@ -87,9 +88,9 @@ public class ProductViewController {
     @GetMapping("/buy/{prodId}")
     public String buy(@PathVariable("prodId") Long id, Model model, HttpSession session) {
         if(session.getAttribute("customer") == null) {return "redirect:/";}
-
-        Product product = productService.getProductById(id);
-        model.addAttribute("product", product);
+        model.addAttribute("PurchaseDTO", new PurchaseDTO());
+        System.out.println(productService.getProductById(id).getId());
+        model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("customer", session.getAttribute("customer"));
         return "BuyProductPage";
     }
