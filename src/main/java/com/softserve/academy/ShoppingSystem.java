@@ -11,5 +11,4 @@ public class ShoppingSystem {
     public static void main(String[] args) {
         SpringApplication.run(com.softserve.academy.ShoppingSystem.class, args);
     }
-
 }
